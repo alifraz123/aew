@@ -26,29 +26,23 @@
     padding-top: 10.2px;" class="card-body">
                                         <div class="row">
 
-                                            <input type="hidden" id="invoice" name="invoice" value="{{$productSaleId}}">
+                                            <input type="hidden" id="invoice" name="invoice" value="">
 
 
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Enter Date</label>
-                                                    <input type="text" name="Date" disabled id="Date" required class="form-control" placeholder="Enter Date">
+                                                    <input type="text" name="Date" value="{{$salebook->Date}}" disabled id="Date" required class="form-control" placeholder="Enter Date">
                                                 </div>
                                             </div>
-                                            <script>
-                                                let currentDate = new Date();
-                                                let cDay = currentDate.getDate();
-                                                let cMonth = currentDate.getMonth() + 1;
-                                                let cYear = currentDate.getFullYear();
-                                                document.getElementById('Date').value = cYear + "/" + cMonth + "/" + cDay;
-                                            </script>
+                                           
                                             <div class="col-sm-6">
                                                 <!-- text input -->
                                                 <div class="form-group">
                                                     <label>Enter City</label>
-                                                    <select name="City" id="City" required class="form-control select2 select2bs4">
-                                                        <option disabled selected value="">Choose value...</option>
-                                                        @foreach($data as $partydata)
+                                                    <select name="City"  id="City" required class="form-control select2 select2bs4">
+                                                        <option  selected value="{{$salebook->City}}">{{$salebook->City}}</option>
+                                                        @foreach($cities as $partydata)
 
                                                         <option value="{{$partydata->CityName}}"> {{$partydata->CityName}}</option>
                                                         @endforeach
@@ -66,7 +60,7 @@
                                                 <div class="form-group">
                                                     <label>Enter Party Name</label>
                                                     <select name="PartyName" onchange="getBalance_on_partyname_change(this)" id="PartyName" required class="form-control select2 select2bs4" placeholder="Enter Party Name">
-                                                        <option disabled selected value="">Choose value</option>
+                                                        <option  selected value="{{$salebook->PartyName}}">{{$salebook->PartyName}}</option>
                                                         @foreach($parties as $partydata)
                                                         <option value="{{$partydata->PartyName}}"> {{$partydata->PartyName}}</option>
                                                         @endforeach
@@ -79,7 +73,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Enter Sender Name</label>
-                                                    <input type="text" id="Sender" name="Sender" required class="form-control" placeholder="Enter Sender Name">
+                                                    <input type="text" id="Sender" value="{{$salebook->Sender}}" name="Sender" required class="form-control" placeholder="Enter Sender Name">
                                                 </div>
                                             </div>
                                         </div>
@@ -88,13 +82,13 @@
                                                 <!-- text input -->
                                                 <div class="form-group">
                                                     <label>Enter Reciever Name</label>
-                                                    <input type="text" id="Reciever" name="Reciever" required class="form-control" placeholder="Enter Reciever Name">
+                                                    <input type="text" id="Reciever" value="{{$salebook->Reciever}}" name="Reciever" required class="form-control" placeholder="Enter Reciever Name">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Total Bill</label>
-                                                    <input type="text" disabled name="Total" id="Total" required class="form-control" placeholder="Enter Total Bill">
+                                                    <input type="text" value="{{$salebook->Total}}" disabled name="Total" id="Total" required class="form-control" placeholder="Enter Total Bill">
                                                 </div>
                                             </div>
                                         </div>
@@ -104,13 +98,13 @@
                                                 <!-- text input -->
                                                 <div class="form-group">
                                                     <label>Enter Rent</label>
-                                                    <input type="text" oninput="add_total_and_rent()" name="Rent" id="Rent" required class="form-control" placeholder="Enter Rent">
+                                                    <input type="text" value="{{$salebook->Rent}}" oninput="add_total_and_rent()" name="Rent" id="Rent" required class="form-control" placeholder="Enter Rent">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Final Total</label>
-                                                    <input type="text" disabled name="FinalTotal" id="FinalTotal" required class="form-control" placeholder="Enter Final Total">
+                                                    <input type="text" value="{{$salebook->FinalTotal}}" disabled name="FinalTotal" id="FinalTotal" required class="form-control" placeholder="Enter Final Total">
                                                 </div>
                                             </div>
                                         </div>
@@ -119,13 +113,13 @@
                                                 <!-- text input -->
                                                 <div class="form-group">
                                                     <label>Balance</label>
-                                                    <input type="text" id="Balance" disabled name="Balance" required class="form-control">
+                                                    <input type="text" value="{{$salebook->Balance}}" id="Balance" disabled name="Balance" required class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Enter Builty No.</label>
-                                                    <input type="text" id="BuiltyNo" name="BuiltyNo" required class="form-control" placeholder="Enter Builty No.">
+                                                    <input type="text" value="{{$salebook->BuiltyNo}}" id="BuiltyNo" name="BuiltyNo" required class="form-control" placeholder="Enter Builty No.">
                                                 </div>
 
                                             </div>
@@ -136,7 +130,7 @@
                                                 <div class="form-group">
                                                     <label>Enter Remarks</label>
                                                     <textarea name="Remarks" id="Remarks" style="width: 100%;" rows="5" required class="form-control" placeholder="Enter Remarks">
-
+                                                    {{$salebook->Remarks}}
                                             </textarea>
 
                                                 </div>
@@ -439,11 +433,7 @@
                         document.getElementById('Balance').value = '';
                         document.getElementById('BuiltyNo').value = '';
                         document.getElementById('Remarks').value = '';
-                        let currentDate = new Date();
-                        let cDay = currentDate.getDate();
-                        let cMonth = currentDate.getMonth() + 1;
-                        let cYear = currentDate.getFullYear();
-                        document.getElementById('Date').value = cYear + "/" + cMonth + "/" + cDay;
+                        
 
                     }
 

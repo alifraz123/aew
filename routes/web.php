@@ -93,8 +93,15 @@ Route::post('getBalanceOfCurrentParty', [App\Http\Controllers\SavePartydataContr
 
 Route::post('sendMultipleData', [App\Http\Controllers\SavePartydataController::class, 'sendMultipleData_method']);
 Route::get('edit_salesbookinvoice',function(){
-return view('admin/modules/SalesBook/salesbookedit');
+    $parties = DB::table('parties')->get();
+return view('admin/modules/SalesBook/salesbookedit',['parties'=>$parties]);
 });
+Route::post('getInvoicesForEdit', [App\Http\Controllers\SaveSalesBookdataController::class, 'getInvoicesForEdit_method']);
+Route::get('showSaleInvoices',function(){
+    return view('admin/modules/SalesBook/showSaleInvoices');
+});
+Route::get('edit_invoice/{id}', [App\Http\Controllers\SaveSalesBookdataController::class, 'edit_invoice_method']);
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

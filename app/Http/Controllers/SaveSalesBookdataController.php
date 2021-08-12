@@ -34,7 +34,20 @@ class SaveSalesBookdataController extends Controller
         }
      }
 
-   
+     public function getInvoicesForEdit_method(Request $request){
+         $data = DB::table('salebook')->where('Date',$request->startDate)->where('Date',$request->endDate)
+         ->where('PartyName',$request->PartyName)->get();
+        return view('admin/modules/SalesBook/showSaleInvoices',['saleInvoices'=>$data]);
+     }
+     public function edit_invoice_method($id){
+         $salebook = DB::table('salebook')->where('invoice',$id)->get()->first();
+         $salebook_detail = DB::table('salebook_detail')->where('invoice',$id)->get()->first();
+         $cities = DB::table('cities')->get();
+         $parties = DB::table('parties')->get();
+         $items = DB::table('items')->get();
+         return view('admin/modules/SalesBook/edit_invoice',
+         ['salebook'=>$salebook,'salebook_detail'=>$salebook_detail,'parties'=>$parties,'items'=>$items,'cities'=>$cities]);
+     }
 
      public function show_companydata_method(){
        return  $parties = DB::table('salebook')->get();
