@@ -242,30 +242,24 @@
                                     var Quantity = document.getElementById('Quantity').value;
                                     var productTotal = document.getElementById('productTotal').value;
                                     // alert(aa);
-                                    if(Rate!=''){
+                                    if (Rate != '') {
                                         var tr =
-                                        "<tr>" +
-                                        "<td><input type='text' class='form-control' name='ItemName[]' value='" + ItemName + "'></td>" +
-                                        "<td><input type='text' name='Rate[]' class='form-control' value='" + Rate + "' ></td>" +
-                                        "<td><input type='text' name='Category[]'  value='" + Category + "' required class='form-control' ></td>" +
-                                        "<td><input type='text' name='Quantity[]' value='" + Quantity + "' required class='form-control' >" +
-                                        "<td><input type='text' name='productTotal[]' value='" + productTotal + "' required class='form-control' >" +
-                                        "<th> <a class='btn btn-danger deleteRow'>delete</a> </th>" +
-                                        "</tr>";
-
-
-                                    $('tbody').append(tr);
+                                            "<tr>" +
+                                            "<td><input type='text' class='form-control' name='ItemName[]' value='" + ItemName + "'></td>" +
+                                            "<td><input type='text' name='Rate[]' class='form-control' value='" + Rate + "' ></td>" +
+                                            "<td><input type='text' name='Category[]'  value='" + Category + "' required class='form-control' ></td>" +
+                                            "<td><input type='text' name='Quantity[]' value='" + Quantity + "' required class='form-control' >" +
+                                            "<td><input type='text' name='productTotal[]' value='" + productTotal + "' required class='form-control' >" +
+                                            "<th> <a class='btn btn-danger deleteRow'>delete</a> </th>" +
+                                            "</tr>";
+                                        $('tbody').append(tr);
 
                                     }
-                                   
                                     $(".deleteRow").click(function() {
                                         $(this).parent().parent().remove();
                                         addTotal();
                                     });
-                                //    document.getElementById('ItemName').innerHTML = '';
-                                    // getItemNamesForSaleDetail();
-                                    
-                                    $("#ItemName").val('').trigger('change') ;
+                                    $("#ItemName").val('').trigger('change');
                                     document.getElementById('Rate').value = '';
                                     document.getElementById('Quantity').value = '';
                                     document.getElementById('Category').value = '';
@@ -276,35 +270,11 @@
 
                         </div>
                     </div>
-
-                    <!-- general form elements -->
-
                 </div>
 
             </div>
 
             <script>
-                 // function getItemNamesForSaleDetail(){
-                //     $.ajax({
-                //         url : 'getItemNamesForSaleDetail',
-                //         dataType : 'json',
-                //         type : 'get',
-                //         success : function(data){
-                //             console.log("Item names are : "+data);
-                //             let output= '<option selected disabled value="0">Choose ...</option>';
-                //             data.forEach(el=>{
-                //                 output +=`
-                                
-                //                 <option value="${el.ItemName}"> ${el.ItemName}</option>
-                                                   
-                //                 `;
-                //             })
-                //             document.getElementById('ItemName').innerHTML= output
-                //             // console.log(output);
-                //         }
-                //     })
-                // }
-                // getItemNamesForSaleDetail();
                 function getSelectedProductData(id) {
                     var id = document.getElementById(id).value;
                     var token = '{{csrf_token()}}';
@@ -410,58 +380,73 @@
 
                     }
                     // console.log(obj);
+                    var partyname = document.getElementById('PartyName').value;
+                    var City = document.getElementById('City').value;
+                    var Sender = document.getElementById('Sender').value;
+                    var Reciever = document.getElementById('Reciever').value;
+                    var Rent = document.getElementById('Rent').value;
+                    var BuiltyNo = document.getElementById('BuiltyNo').value;
+                    var Remarks = document.getElementById('Remarks').value;
+                    if (partyname != '' && City != '' && Remarks != '' && Sender != '' && Reciever != '' && Rent != '' && BuiltyNo != '') {
 
+                        var token = '{{csrf_token()}}';
+                        $.ajax({
+                            type: "post",
+                            url: "sendMultipleData",
+                            data: {
 
-                    var token = '{{csrf_token()}}';
-                    $.ajax({
-                        type: "post",
-                        url: "sendMultipleData",
-                        data: {
+                                obj: obj,
+                                Date: document.getElementById('Date').value,
+                                City: document.getElementById('City').value,
+                                BuiltyNo: document.getElementById('BuiltyNo').value,
+                                Sender: document.getElementById('Sender').value,
+                                Reciever: document.getElementById('Reciever').value,
+                                Total: document.getElementById('Total').value,
+                                Rent: document.getElementById('Rent').value,
+                                FinalTotal: document.getElementById('FinalTotal').value,
+                                Balance: document.getElementById('Balance').value,
+                                PartyName: document.getElementById('PartyName').value,
+                                Remarks: document.getElementById('Remarks').value,
+                                _token: token
+                            },
+                            dataType: "text",
+                            success: function(data) {
+                                console.log(data);
 
-                            obj: obj,
-                            Date: document.getElementById('Date').value,
-                            City: document.getElementById('City').value,
-                            BuiltyNo: document.getElementById('BuiltyNo').value,
-                            Sender: document.getElementById('Sender').value,
-                            Reciever: document.getElementById('Reciever').value,
-                            Total: document.getElementById('Total').value,
-                            Rent: document.getElementById('Rent').value,
-                            FinalTotal: document.getElementById('FinalTotal').value,
-                            Balance: document.getElementById('Balance').value,
-                            PartyName: document.getElementById('PartyName').value,
-                            Remarks: document.getElementById('Remarks').value,
-                            _token: token
-                        },
-                        dataType: "text",
-                        success: function(data) {
-                            console.log(data);
+                            },
+                            error: function(req, status, error) {
+                                console.log(error);
+                            }
+                        });
 
-                        },
-                        error: function(req, status, error) {
-                            console.log(error);
-                        }
-                    });
+                        var table = document.getElementById('table');
+                        var row = document.getElementsByTagName('tbody')[0];
+                        deleteRow();
 
-                    var table = document.getElementById('table');
-                    var row = document.getElementsByTagName('tbody')[0];
-                    deleteRow();
+                        function deleteRow() {
+                            row.parentNode.removeChild(row);
+                        };
+                        document.getElementById('Date').value = '';
+                        // document.getElementById('City').value = '';
+                        $("#City").val('').trigger('change');
+                        // document.getElementById('PartyName').value = '';
+                        $("#PartyName").val('').trigger('change');
+                        document.getElementById('Sender').value = '';
+                        document.getElementById('Reciever').value = '';
+                        document.getElementById('Total').value = '';
+                        document.getElementById('Rent').value = '';
+                        document.getElementById('FinalTotal').value = '';
+                        document.getElementById('Balance').value = '';
+                        document.getElementById('BuiltyNo').value = '';
+                        document.getElementById('Remarks').value = '';
+                        let currentDate = new Date();
+                        let cDay = currentDate.getDate();
+                        let cMonth = currentDate.getMonth() + 1;
+                        let cYear = currentDate.getFullYear();
+                        document.getElementById('Date').value = cDay + "/" + cMonth + "/" + cYear;
 
-                    function deleteRow() {
-                        row.parentNode.removeChild(row);
-                    };
-                    document.getElementById('Date').value = '';
-                    // document.getElementById('City').value = '';
-                    $("#City").val('').trigger('change') ;
-                    // document.getElementById('PartyName').value = '';
-                    $("#PartyName").val('').trigger('change') ;
-                    document.getElementById('Sender').value = '';
-                    document.getElementById('Reciever').value = '';
-                    document.getElementById('Total').value = '';
-                    document.getElementById('Rent').value = '';
-                    document.getElementById('FinalTotal').value = '';
-                    document.getElementById('Balance').value = '';
-                    document.getElementById('BuiltyNo').value = '';
-                    document.getElementById('Remarks').value = '';
+                    }
+
 
 
                 }

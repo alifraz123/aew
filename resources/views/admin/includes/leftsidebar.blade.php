@@ -40,10 +40,25 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="salesbook" class="nav-link">
+                <a href="" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sales Book</p>
+                  <i class="right fas fa-angle-left"></i>
                 </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="salesbook" class="nav-link">
+                      <i class="far fa-dot-circle nav-icon"></i>
+                      <p>Add Invoice</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="edit_salesbookinvoice" class="nav-link">
+                      <i class="far fa-dot-circle nav-icon"></i>
+                      <p>Edit Invoice</p>
+                    </a>
+                  </li>
+                </ul>
               </li>
              
               

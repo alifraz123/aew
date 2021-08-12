@@ -7,6 +7,7 @@ use App\Http\Controllers\SaveItemsdataController;
 use App\Http\Controllers\SaveSalesBookdataController;
 use App\Http\Controllers\SaveSalesBookDetaildataController;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,15 +31,6 @@ Route::get('/admin', function () {
     return view('admin/modules/dashboard/index');
 });
 
-Route::get('/repeator', function () {
-    
-    
-    return view('repeator');
-});
-
-Route::post('getBalanceOfCurrentParty', [App\Http\Controllers\SavePartydataController::class, 'getBalanceOfCurrentParty_method']);
-
-Route::post('sendMultipleData', [App\Http\Controllers\SavePartydataController::class, 'sendMultipleData_method']);
 
 Route::get('/parties', function () {
     $parties = DB::table('cities')->get();
@@ -80,8 +72,6 @@ Route::get('/itemesditform', function () {
 });
 Route::post('edit_itemsdata', [App\Http\Controllers\SaveItemsdataController::class, 'update_companydata_method']);
 
-
-
 Route::get('/salesbook', function () {
     $cities = DB::table('cities')->get();
     $parties = DB::table('parties')->get();
@@ -97,44 +87,14 @@ Route::get('/salesbook', function () {
         return view('admin/modules/SalesBook/salesbook',['data'=>$cities,'parties'=>$parties,'productSaleId'=>$productSaleId,'items'=>$items]);   
 });
 
-// Route::get('/getItemNamesForSaleDetail', [App\Http\Controllers\SaveSalesBookdataController::class, 'getItemNamesForSaleDetail']);
-
-
-
-Route::post('save_salesbookdata', [App\Http\Controllers\SaveSalesBookdataController::class, 'save_partydata_method']);
-Route::post('deleteProduct', [App\Http\Controllers\SaveSalesBookdataController::class, 'deleteProduct_method']);
-Route::get('show_salesbookdata', [App\Http\Controllers\SaveSalesBookdataController::class, 'show_companydata_method']);
-
-Route::post('show_salesbookdetaildata_withrespect_last_id', [App\Http\Controllers\SaveSalesBookdataController::class, 
-'show_salesbookdetaildata_withrespect_last_id']);
-
 Route::post('getSelectedProductData', [App\Http\Controllers\SaveSalesBookdataController::class, 'getSelectedProductData_method']);
-Route::post('getSelectedProductData_total', [App\Http\Controllers\SaveSalesBookdataController::class, 'getSelectedProductData_total_method']);
-Route::get('delete_salesbookdata/{id}', [App\Http\Controllers\SaveSalesBookdataController::class, 'delete_companydata_method']);
-Route::get('delete_salesbook_product_data/{id}', [App\Http\Controllers\SaveSalesBookdataController::class, 'delete_salesbook_product_data']);
-Route::get('edit_salesbookdata/{id}', [App\Http\Controllers\SaveSalesBookdataController::class, 'edit_companydata_method']);
-Route::get('/salesbookditform', function () {
-    return view('admin/modules/SalesBook/salesbook');
+
+Route::post('getBalanceOfCurrentParty', [App\Http\Controllers\SavePartydataController::class, 'getBalanceOfCurrentParty_method']);
+
+Route::post('sendMultipleData', [App\Http\Controllers\SavePartydataController::class, 'sendMultipleData_method']);
+Route::get('edit_salesbookinvoice',function(){
+return view('admin/modules/SalesBook/salesbookedit');
 });
-Route::post('edit_salesbookdata', [App\Http\Controllers\SaveSalesBookdataController::class, 'update_companydata_method']);
-Route::post('addProductDetail_url', [App\Http\Controllers\SaveSalesBookdataController::class, 'addProductDetail_method']);
-
-
-Route::get('/salesbookdetail', function () {
-    return view('admin/modules/SalesBookDetail/salesbookdetail');
-});
-Route::post('save_salesbookdetaildata', [App\Http\Controllers\SaveSalesBookDetaildataController::class, 'save_partydata_method']);
-Route::get('show_salesbookdetaildata', [App\Http\Controllers\SaveSalesBookDetaildataController::class, 'show_companydata_method']);
-
-Route::get('delete_salesbookdetaildata/{id}', [App\Http\Controllers\SaveSalesBookDetaildataController::class, 'delete_companydata_method']);
-Route::get('edit_salesbookdetaildata/{id}', [App\Http\Controllers\SaveSalesBookDetaildataController::class, 'edit_companydata_method']);
-Route::get('/salesbookdetailditform', function () {
-    return view('admin/modules/Parties/companyedit');
-});
-Route::post('edit_salesbookdetaildata', [App\Http\Controllers\SaveCompanydataController::class, 'update_companydata_method']);
-
-
-
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
