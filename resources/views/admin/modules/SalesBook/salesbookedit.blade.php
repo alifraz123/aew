@@ -20,8 +20,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div style="padding:20px" class="card card-outline card-info">
-                <form method="post" action="getInvoicesForEdit">
-                    @csrf
+                <form method="get" action="getInvoicesForEdit">
+                   
                     <div class="row">
 
                         <div class="col-md-4">
@@ -68,33 +68,5 @@
     </section>
 </div>
 
-<script>
-    console.log(document.getElementById('endData')).value;
-    function getInvoicesForEdit() {
-        var startDate = document.getElementById('startDate').value;
-        var endDate = document.getElementById('endDate').value;
-        var PartyName = document.getElementById('PartyName');
-        console.log(startDate + endDate + PartyName);
-        var token = '{{csrf_token()}}';
-        $.ajax({
-            type: "post",
-            url: "getInvoicesForEdit",
-            data: {
-                startDate: startDate,
-                endDate: endDate,
-                PartyName: PartyName,
-                _token: token
-            },
-            dataType: "text",
-            success: function(data) {
 
-                console.log(data);
-
-            },
-            error: function(req, status, error) {
-                console.log(error);
-            }
-        });
-    }
-</script>
 @endsection

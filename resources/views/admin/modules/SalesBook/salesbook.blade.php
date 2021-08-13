@@ -39,8 +39,16 @@
                                                 let currentDate = new Date();
                                                 let cDay = currentDate.getDate();
                                                 let cMonth = currentDate.getMonth() + 1;
+                                                if(cMonth>=1||cMonth<=9){
+                                                    cMonth = "0"+cMonth;
+                                                   
+                                                }
+                                                else{
+                                                    cMonth = cMonth;
+                                                   
+                                                }
                                                 let cYear = currentDate.getFullYear();
-                                                document.getElementById('Date').value = cYear + "/" + cMonth + "/" + cDay;
+                                                document.getElementById('Date').value = cYear + "-" + cMonth + "-" + cDay;
                                             </script>
                                             <div class="col-sm-6">
                                                 <!-- text input -->
@@ -248,7 +256,7 @@
                                             "<td><input type='text' class='form-control' name='ItemName[]' value='" + ItemName + "'></td>" +
                                             "<td><input type='text' name='Rate[]' class='form-control' value='" + Rate + "' ></td>" +
                                             "<td><input type='text' name='Category[]'  value='" + Category + "' required class='form-control' ></td>" +
-                                            "<td><input type='text' name='Quantity[]' value='" + Quantity + "' required class='form-control' >" +
+                                            "<td><input type='text' oninput='changeInvoice_oninput()' name='Quantity[]' value='" + Quantity + "' required class='form-control' >" +
                                             "<td><input type='text' name='productTotal[]' value='" + productTotal + "' required class='form-control' >" +
                                             "<th> <a class='btn btn-danger deleteRow'>delete</a> </th>" +
                                             "</tr>";
@@ -344,6 +352,33 @@
                     var rent = document.getElementById('Rent').value;
                     var totalbill = parseInt(total) + parseInt(rent);
                     document.getElementById('FinalTotal').value = totalbill;
+                }
+                function changeInvoice_oninput(){
+                    var ItemName = document.getElementsByName('ItemName[]');
+                    var Rate = document.getElementsByName('Rate[]');
+                    var Category = document.getElementsByName('Category[]');
+                    var Quantity = document.getElementsByName('Quantity[]');
+                    var productTotal = document.getElementsByName('productTotal[]');
+                   
+                    
+                    
+                    for (var i = 1; i < Rate.length; i++) {
+                       
+                        var ItemName1 = ItemName[i].value;
+                        
+                        var Rate1 = Rate[i].value;
+                       
+                        var Category1 = Category[i].value;
+                        var Quantity1 = Quantity[i].value;
+                        
+                        var productTotal1;
+                        productTotal[i].value = Rate1*Quantity1; 
+                       
+                      
+                        // alert(ItemName1+" "+Rate1+" "+Category1+" "+Quantity1+" "+productTotal1);
+                       
+
+                    }
                 }
 
                 function sendMultipleData() {
@@ -443,7 +478,7 @@
                         let cDay = currentDate.getDate();
                         let cMonth = currentDate.getMonth() + 1;
                         let cYear = currentDate.getFullYear();
-                        document.getElementById('Date').value = cYear + "/" + cMonth + "/" + cDay;
+                        document.getElementById('Date').value = cYear + "-" + cMonth + "-" + cDay;
 
                     }
 

@@ -46,8 +46,15 @@
       <td><button class="btn btn-danger"><a style="color: white;" href="edit_invoice/{{$saleInvoice->invoice}}">Edit</a></button></td>
     </tr>
     @endforeach
+   
   </tbody>
 </table>
+{{$saleInvoices->links()}}
+<style>
+  .w-5{
+    display: none;
+  }
+</style>
                 </div>
             </div>
         </div>

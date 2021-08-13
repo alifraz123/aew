@@ -26,8 +26,8 @@
     padding-top: 10.2px;" class="card-body">
                                         <div class="row">
 
-                                            <input type="hidden" id="invoice" name="invoice" value="">
-
+                                            <!-- <input type="hidden" id="invoice" name="invoice" value=""> -->
+                                            <input type="hidden" id="invoice_edit" name="invoice_edit" value="{{$salebook->invoice}}">
 
                                             <div class="col-sm-6">
                                                 <div class="form-group">
@@ -35,13 +35,13 @@
                                                     <input type="text" name="Date" value="{{$salebook->Date}}" disabled id="Date" required class="form-control" placeholder="Enter Date">
                                                 </div>
                                             </div>
-                                           
+
                                             <div class="col-sm-6">
                                                 <!-- text input -->
                                                 <div class="form-group">
                                                     <label>Enter City</label>
-                                                    <select name="City"  id="City" required class="form-control select2 select2bs4">
-                                                        <option  selected value="{{$salebook->City}}">{{$salebook->City}}</option>
+                                                    <select name="City" id="City" required class="form-control select2 select2bs4">
+                                                        <option selected value="{{$salebook->City}}">{{$salebook->City}}</option>
                                                         @foreach($cities as $partydata)
 
                                                         <option value="{{$partydata->CityName}}"> {{$partydata->CityName}}</option>
@@ -60,7 +60,7 @@
                                                 <div class="form-group">
                                                     <label>Enter Party Name</label>
                                                     <select name="PartyName" onchange="getBalance_on_partyname_change(this)" id="PartyName" required class="form-control select2 select2bs4" placeholder="Enter Party Name">
-                                                        <option  selected value="{{$salebook->PartyName}}">{{$salebook->PartyName}}</option>
+                                                        <option selected value="{{$salebook->PartyName}}">{{$salebook->PartyName}}</option>
                                                         @foreach($parties as $partydata)
                                                         <option value="{{$partydata->PartyName}}"> {{$partydata->PartyName}}</option>
                                                         @endforeach
@@ -131,7 +131,7 @@
                                                     <label>Enter Remarks</label>
                                                     <textarea name="Remarks" id="Remarks" style="width: 100%;" rows="5" required class="form-control" placeholder="Enter Remarks">
                                                     {{$salebook->Remarks}}
-                                            </textarea>
+                                                    </textarea>
 
                                                 </div>
                                             </div>
@@ -208,7 +208,7 @@
 
                                             <button style="width: 100%;" class="btn btn-primary addRow">ADD PRODUCT +</button>
                                         </div>
-                                        <button onclick="sendMultipleData()" class="form-control btn btn-primary">Send Data</button>
+                                        <button onclick="sendMultipleData()" class="form-control btn btn-primary">UPDATE</button>
                                     </div>
                                     <table class="table">
                                         <thead id="hide_by_default">
@@ -222,6 +222,16 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @foreach($salebook_detail as $sbd)
+                                            <tr>
+                                                <td><input type='text' class='form-control' name='ItemName[]' value='{{$sbd->ItemName}}'></td>
+                                                <td><input type='text' name='Rate[]' class='form-control' value='{{$sbd->Rate}}'></td>
+                                                <td><input type='text' name='Category[]' value='{{$sbd->Category}}' required class='form-control'></td>
+                                                <td><input type='text' oninput="changeInvoice_oninput()" name='Quantity[]' value='{{$sbd->Quantity}}' required class='form-control'>
+                                                <td><input type='text' name='productTotal[]' value='{{$sbd->Total}}' required class='form-control'>
+                                                <th> <a class='btn btn-danger deleteRow'>delete</a> </th>
+                                            </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -229,6 +239,11 @@
                             <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
                             <script>
+                                $(".deleteRow").click(function() {
+
+                                    $(this).parent().parent().remove();
+                                    addTotal();
+                                });
                                 $('.addRow').on('click', function() {
                                     var ItemName = document.getElementById('ItemName').value;
                                     var Rate = document.getElementById('Rate').value;
@@ -242,12 +257,16 @@
                                             "<td><input type='text' class='form-control' name='ItemName[]' value='" + ItemName + "'></td>" +
                                             "<td><input type='text' name='Rate[]' class='form-control' value='" + Rate + "' ></td>" +
                                             "<td><input type='text' name='Category[]'  value='" + Category + "' required class='form-control' ></td>" +
-                                            "<td><input type='text' name='Quantity[]' value='" + Quantity + "' required class='form-control' >" +
+                                            "<td><input type='text' oninput='changeInvoice_oninput()' name='Quantity[]' value='" + Quantity + "' required class='form-control' >" +
                                             "<td><input type='text' name='productTotal[]' value='" + productTotal + "' required class='form-control' >" +
                                             "<th> <a class='btn btn-danger deleteRow'>delete</a> </th>" +
                                             "</tr>";
                                         $('tbody').append(tr);
+                                        $(".deleteRow").click(function() {
 
+                                            $(this).parent().parent().remove();
+                                            addTotal();
+                                        });
                                     }
                                     $(".deleteRow").click(function() {
                                         $(this).parent().parent().remove();
@@ -270,18 +289,20 @@
 
             <script>
                 function getSelectedProductData(id) {
+
                     var id = document.getElementById(id).value;
+
                     var token = '{{csrf_token()}}';
                     $.ajax({
                         type: "post",
-                        url: "getSelectedProductData",
+                        url: "../getSelectedProductData",
                         data: {
                             id: id,
                             _token: token
                         },
                         dataType: "json",
                         success: function(data) {
-                            // console.log(data);
+                            // console.log("selected data is :"+data);
                             document.getElementById('Rate').value = data[0].Rate;
                             document.getElementById('Category').value = data[0].Category;
                             document.getElementById('Quantity').value = data[0].Quantity;
@@ -297,7 +318,7 @@
                     var token = '{{csrf_token()}}';
                     $.ajax({
                         type: "post",
-                        url: "getBalanceOfCurrentParty",
+                        url: "../getBalanceOfCurrentParty",
                         data: {
                             PartyName: document.getElementById('PartyName').value,
                             _token: token
@@ -340,7 +361,36 @@
                     document.getElementById('FinalTotal').value = totalbill;
                 }
 
+                function changeInvoice_oninput() {
+                    var ItemName = document.getElementsByName('ItemName[]');
+                    var Rate = document.getElementsByName('Rate[]');
+                    var Category = document.getElementsByName('Category[]');
+                    var Quantity = document.getElementsByName('Quantity[]');
+                    var productTotal = document.getElementsByName('productTotal[]');
+
+
+
+                    for (var i = 1; i < Rate.length; i++) {
+
+                        var ItemName1 = ItemName[i].value;
+
+                        var Rate1 = Rate[i].value;
+
+                        var Category1 = Category[i].value;
+                        var Quantity1 = Quantity[i].value;
+
+                        var productTotal1;
+                        productTotal[i].value = Rate1 * Quantity1;
+
+
+                        // alert(ItemName1+" "+Rate1+" "+Category1+" "+Quantity1+" "+productTotal1);
+
+
+                    }
+                }
+
                 function sendMultipleData() {
+
 
                     var ItemName = document.getElementsByName('ItemName[]');
                     var Rate = document.getElementsByName('Rate[]');
@@ -386,10 +436,11 @@
                         var token = '{{csrf_token()}}';
                         $.ajax({
                             type: "post",
-                            url: "sendMultipleData",
+                            url: "../sendMultipleData_edit",
                             data: {
 
                                 obj: obj,
+                                invoice_edit: document.getElementById('invoice_edit').value,
                                 Date: document.getElementById('Date').value,
                                 City: document.getElementById('City').value,
                                 BuiltyNo: document.getElementById('BuiltyNo').value,
@@ -433,7 +484,7 @@
                         document.getElementById('Balance').value = '';
                         document.getElementById('BuiltyNo').value = '';
                         document.getElementById('Remarks').value = '';
-                        
+
 
                     }
 

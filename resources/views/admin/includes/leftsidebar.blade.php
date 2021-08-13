@@ -47,15 +47,38 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="salesbook" class="nav-link">
+                    <a href="/aew/public/salesbook" class="nav-link">
                       <i class="far fa-dot-circle nav-icon"></i>
                       <p>Add Invoice</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="edit_salesbookinvoice" class="nav-link">
+                    <a href="/aew/public/edit_salesbookinvoice" class="nav-link">
                       <i class="far fa-dot-circle nav-icon"></i>
                       <p>Edit Invoice</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Cash Book</p>
+                  <i class="right fas fa-angle-left"></i>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/aew/public/cashbook" class="nav-link">
+                      <i class="far fa-dot-circle nav-icon"></i>
+                      <p>Add Cash Invoice</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/aew/public/edit_cashbookinvoice" class="nav-link">
+                      <i class="far fa-dot-circle nav-icon"></i>
+                      <p>Edit Cashbook Invoice</p>
                     </a>
                   </li>
                 </ul>

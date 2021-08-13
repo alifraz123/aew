@@ -6,6 +6,7 @@ use App\Http\Controllers\SavePartydataController;
 use App\Http\Controllers\SaveItemsdataController;
 use App\Http\Controllers\SaveSalesBookdataController;
 use App\Http\Controllers\SaveSalesBookDetaildataController;
+use App\Http\Controllers\Cashbook;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -87,20 +88,45 @@ Route::get('/salesbook', function () {
         return view('admin/modules/SalesBook/salesbook',['data'=>$cities,'parties'=>$parties,'productSaleId'=>$productSaleId,'items'=>$items]);   
 });
 
+
+
 Route::post('getSelectedProductData', [App\Http\Controllers\SaveSalesBookdataController::class, 'getSelectedProductData_method']);
 
 Route::post('getBalanceOfCurrentParty', [App\Http\Controllers\SavePartydataController::class, 'getBalanceOfCurrentParty_method']);
 
 Route::post('sendMultipleData', [App\Http\Controllers\SavePartydataController::class, 'sendMultipleData_method']);
+Route::post('sendMultipleData_edit', [App\Http\Controllers\SavePartydataController::class, 'sendMultipleData_edit']);
 Route::get('edit_salesbookinvoice',function(){
     $parties = DB::table('parties')->get();
 return view('admin/modules/SalesBook/salesbookedit',['parties'=>$parties]);
 });
-Route::post('getInvoicesForEdit', [App\Http\Controllers\SaveSalesBookdataController::class, 'getInvoicesForEdit_method']);
+
+Route::get('getInvoicesForEdit', [App\Http\Controllers\SaveSalesBookdataController::class, 'getInvoicesForEdit_method']);
 Route::get('showSaleInvoices',function(){
     return view('admin/modules/SalesBook/showSaleInvoices');
 });
 Route::get('edit_invoice/{id}', [App\Http\Controllers\SaveSalesBookdataController::class, 'edit_invoice_method']);
+
+Route::get('cashbook',function(){
+    $cities = DB::table('cities')->get();
+    $parties = DB::table('parties')->get();
+    $items = DB::table('items')->get();
+    $salebook = DB::table('salebook')->latest()->first();
+       $productSaleId = 0;
+        if(null || empty($salebook)){
+            $productSaleId = 1;
+        }
+       else{
+           $productSaleId = $salebook->invoice+1;
+       }
+        return view('admin/modules/cashbook/cashbook',['data'=>$cities,'parties'=>$parties,'productSaleId'=>$productSaleId,'items'=>$items]);   
+});
+Route::get('edit_cashbookinvoice',function(){
+return view('admin/modules/cashbook/edit_cashbookinvoice');
+});
+
+Route::post('getPartyData', [App\Http\Controllers\Cashbook::class, 'getPartyData_method']);
+Route::post('sendMultipleData', [App\Http\Controllers\Cashbook::class, 'sendMultipleData_method']);
 
 Auth::routes();
 
