@@ -26,7 +26,7 @@ class Cashbook extends Controller
         }
         return  $bb - $aa;
     }
-    public function sendMultipleData_method(Request $request){
+    public function sendCashbookData_method(Request $request){
         $data =  DB::insert("insert into salebook(Ref,Date,City,BuiltyNo,Sender,Reciever,Total
         ,Rent,FinalTotal,Balance,Debit,Credit,Username,PartyName,Remarks)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [
             "cb", $request->Date, "0", "0", "0", "0", "0", "0", "0", $request->Balance, "0",$request->Cash, Auth::user()->name, $request->PartyName, $request->Remarks

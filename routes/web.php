@@ -126,8 +126,16 @@ return view('admin/modules/cashbook/edit_cashbookinvoice');
 });
 
 Route::post('getPartyData', [App\Http\Controllers\Cashbook::class, 'getPartyData_method']);
-Route::post('sendMultipleData', [App\Http\Controllers\Cashbook::class, 'sendMultipleData_method']);
+Route::post('sendCashbookData', [App\Http\Controllers\Cashbook::class, 'sendCashbookData_method']);
 
+
+Route::get('partyWiseReport',function(){
+    $parties = DB::table('parties')->get();
+return view('admin/modules/reports/partyWiseReport',['parties'=>$parties]);
+});
+Route::post('getPartyWiseReport',function(){
+return DB::table('salebook')->get();
+});
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

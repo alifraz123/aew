@@ -81,24 +81,8 @@
                                                 </div>
 
                                             </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Invoice</label>
-
-                                                    <input type="text" class="form-control" name="invoice" id="invoice">
-
-
-                                                </div>
-
-                                            </div>
-
+                                          
                                         </div>
-
-
-
-
-
-
 
                                     </div>
 
@@ -159,7 +143,7 @@
 
                                         <div style="padding-top: 16px;" class="col-sm-4">
 
-                                            <button style="width: 100%;" onclick="sendMultipleData()" class="btn btn-primary addRow">ADD CASH +</button>
+                                            <button style="width: 100%;" onclick="sendCashbookData()" class="btn btn-primary addRow">ADD CASH +</button>
                                         </div>
 
                                     </div>
@@ -193,6 +177,7 @@
                             document.getElementById('PartyCode').value = data.PartyCode;
                             document.getElementById('Adress').innerHTML = data.Adress;
 
+
                         },
                         error: function(req, status, error) {
                             console.log(error);
@@ -217,10 +202,11 @@
                             console.log(error);
                         }
                     });
+                    
                 }
 
 
-                function sendMultipleData() {
+                function sendCashbookData() {
                     let currentDate = new Date();
                     let cDay = currentDate.getDate();
                     let cMonth = currentDate.getMonth() + 1;
@@ -238,17 +224,17 @@
                     
                     var PartyCode = document.getElementById('PartyCode').value;
                     var Adress = document.getElementById('Adress').value;
-                    var invoice = document.getElementById('invoice').value;
+                    // var invoice = document.getElementById('invoice').value;
                     var Cash = document.getElementById('Cash').value;
                     var Balance = document.getElementById('Balance').value;
                     var Remarks = document.getElementById('Remarks').value;
-                    if (PartyName != '' && PartyCode != '' && Adress != '' && invoice != '' && Cash != '' &&
+                    if (PartyName != '' && PartyCode != '' && Adress != '' &&  Cash != '' &&
                         Balance != '' && Remarks != '') {
 
                         var token = '{{csrf_token()}}';
                         $.ajax({
                             type: "post",
-                            url: "sendMultipleData",
+                            url: "sendCashbookData",
                             data: {
 
 
@@ -256,7 +242,7 @@
                                 Date: todayDate,
                                 PartyCode: document.getElementById('PartyCode').value,
                                 Adress: document.getElementById('Adress').value,
-                                invoice: document.getElementById('invoice').value,
+                                // invoice: document.getElementById('invoice').value,
                                 Cash: document.getElementById('Cash').value,
                                 Balance: document.getElementById('Balance').value,
                                 Remarks: document.getElementById('Remarks').value,

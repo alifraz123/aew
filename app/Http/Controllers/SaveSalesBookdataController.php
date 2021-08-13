@@ -39,7 +39,7 @@ class SaveSalesBookdataController extends Controller
          $endDate = $_GET['endDate'];
          $partyName = $_GET['PartyName'];
          $data = DB::table('salebook')->whereBetween('Date',[$startDate,$endDate])
-         ->where('PartyName',$partyName)->paginate(5);
+         ->where('PartyName',$partyName)->where('Ref','sb')->paginate(5);
          $data->appends($request->all());
         return view('admin/modules/SalesBook/showSaleInvoices',['saleInvoices'=>$data]);
      }
