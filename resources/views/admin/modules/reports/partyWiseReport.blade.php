@@ -9,7 +9,7 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
 
-                    <h1>Sales Invoice Edit</h1>
+                    <h1>Reports</h1>
                 </div>
 
             </div>
@@ -167,6 +167,11 @@
                         if(output){
                             window.print();
                         }
+                        else{
+                            alert("Sorry not any data between these dates ");
+                        }
+                        document.getElementById('cardStart').style = "display:block";
+                    document.getElementById('section').style = "display:block";
 
                 }
 

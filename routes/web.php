@@ -218,8 +218,14 @@ Route::get('completeReport',function(){
 
 });
 Route::post('getPartyWiseReport',function(Request $request){
-return DB::table('salebook')->whereBetween('Date',[$request->startDate,$request->endDate])
-->where('PartyName',$request->PartyName)->get();
+    if($request->PartyName == ""){
+        return DB::table('salebook')->whereBetween('Date',[$request->startDate,$request->endDate])->get();
+    }
+    else{
+        return DB::table('salebook')->whereBetween('Date',[$request->startDate,$request->endDate])
+        ->where('PartyName',$request->PartyName)->get();
+    }
+
 });
 Route::get('getCompleteReport',function(Request $request){
     if(Auth::guest()){

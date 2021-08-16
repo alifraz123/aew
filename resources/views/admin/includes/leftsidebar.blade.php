@@ -39,7 +39,12 @@
                   <p>Items</p>
                 </a>
               </li>
-              <li class="nav-item">
+             
+             
+              
+            </ul>
+
+            <li class="nav-item">
                 <a href="" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sales Book</p>
@@ -83,9 +88,24 @@
                   </li>
                 </ul>
               </li>
-             
-              
-            </ul>
+
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Report</p>
+                  <i class="right fas fa-angle-left"></i>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/aew/public/partyWiseReport" class="nav-link">
+                      <i class="far fa-dot-circle nav-icon"></i>
+                      <p>Generate Report</p>
+                    </a>
+                  </li>
+                  
+                </ul>
+              </li>
+
           </li>
        
         </ul>
