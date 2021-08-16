@@ -251,6 +251,13 @@
                             dataType: "text",
                             success: function(data) {
                                 console.log(data);
+                                document.getElementById('PartyName').value = '';
+                        document.getElementById('PartyCode').value = '';
+                        document.getElementById('Adress').value = '';
+                        
+                        document.getElementById('Cash').value = '';
+                        document.getElementById('Balance').value = '';
+                        document.getElementById('Remarks').value = '';
 
                             },
                             error: function(req, status, error) {
@@ -259,13 +266,7 @@
                         });
 
 
-                        document.getElementById('PartyName').value = '';
-                        document.getElementById('PartyCode').value = '';
-                        document.getElementById('Adress').value = '';
-                        document.getElementById('invoice').value = '';
-                        document.getElementById('Cash').value = '';
-                        document.getElementById('Balance').value = '';
-                        document.getElementById('Remarks').value = '';
+                        
 
 
                     }

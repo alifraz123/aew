@@ -24,7 +24,7 @@
 
                     <div class="row">
 
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Select Party Name :</label>
                                 <select name="PartyName" id="PartyName" required class="form-control select2 select2bs4">
@@ -34,6 +34,38 @@
                                     @endforeach
                                 </select>
                             </div>
+                        </div>
+                        <div class="col-md-3">
+
+                            <div class="form-group">
+                                <label>Date From :</label>
+                                <input type="date" name="startDate" id="startDate" required class="form-control" placeholder="Enter Date">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Date To :</label>
+                                <input type="date" name="endDate" id="endDate" required class="form-control" placeholder="Enter Date">
+                            </div>
+                        </div>
+                        <script>
+                                                let currentDate = new Date();
+                                                let cDay = currentDate.getDate();
+                                                let cMonth = currentDate.getMonth() + 1;
+                                                if(cMonth>=1||cMonth<=9){
+                                                    cMonth = "0"+cMonth;
+                                                   
+                                                }
+                                                else{
+                                                    cMonth = cMonth;
+                                                   
+                                                }
+                                                let cYear = currentDate.getFullYear();
+                                                document.getElementById('startDate').value = cYear + "-" + cMonth + "-" + cDay;
+                                                document.getElementById('endDate').value = cYear + "-" + cMonth + "-" + cDay;
+                                            </script>
+                        <div>
+
                         </div>
                         <div class="col-md-2">
                             <div style="margin-top: 32px;" class="form-group">
@@ -65,10 +97,12 @@
             <table id="table" class="table">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">PartyName</th>
+                        <th scope="col">Cash</th>
+                        <th scope="col">Rent</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">FinalTotal</th>
+                        <th scope="col">Balance</th>
                     </tr>
                 </thead>
                 <tbody id="table_body">
@@ -104,6 +138,8 @@
             url: "getPartyWiseReport",
             data: {
                 PartyName: document.getElementById('PartyName').value,
+                startDate  : document.getElementById('startDate').value,
+                endDate : document.getElementById('endDate').value,
                 _token: token
             },
             dataType: "json",
@@ -112,21 +148,25 @@
                 if (data) {
                     document.getElementById('cardStart').style = "display:none";
                     document.getElementById('section').style = "display:none";
+                    let output = '';
                     data.forEach(el => {
-                        let output = '';
+                        
                         output += `
                                     <tr>
                                         <td>${el.PartyName}</td>
-                                        <td>${el.PartyName}</td>
-                                        <td>${el.PartyName}</td>
-                                        <td>${el.PartyName}</td>
+                                        <td>${el.Cash}</td>
+                                        <td>${el.Rent}</td>
+                                        <td>${el.Total}</td>
+                                        <td>${el.FinalTotal}</td>
+                                        <td>${el.Balance}</td>
                                         </tr>
                                     `;
-                        document.getElementById('table_body').innerHTML = output;
+                       
+                    });
+                    document.getElementById('table_body').innerHTML = output;
                         if(output){
                             window.print();
                         }
-                    });
 
                 }
 
