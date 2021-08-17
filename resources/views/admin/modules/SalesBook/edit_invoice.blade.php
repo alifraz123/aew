@@ -221,7 +221,7 @@
                                                 <td>Action</td>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="whereProductsShow">
                                             @foreach($salebook_detail as $sbd)
                                             <tr>
                                                 <td><input type='text' class='form-control' name='ItemName[]' value='{{$sbd->ItemName}}'></td>
@@ -463,14 +463,7 @@
                                 console.log(error);
                             }
                         });
-
-                        var table = document.getElementById('table');
-                        var row = document.getElementsByTagName('tbody')[0];
-                        deleteRow();
-
-                        function deleteRow() {
-                            row.parentNode.removeChild(row);
-                        };
+                        $("#whereProductsShow tr").remove();
                         document.getElementById('Date').value = '';
                         // document.getElementById('City').value = '';
                         $("#City").val('').trigger('change');

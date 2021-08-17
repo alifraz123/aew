@@ -119,6 +119,49 @@ class SavePartydataController extends Controller
         }
         return  $aa - $bb;
     }
+    public function getDebitOfCurrentParty_method(Request $request)
+    {
+        $debit = DB::table('salebook')->where('PartyName', $request->PartyName)->get('Debit');
+        $aa = 0;
+        for ($a = 0; $a < count($debit); $a++) {
+            $aa = $aa + $debit[$a]->Debit;
+        }
+       
+        return $aa;
+    }
+    public function getCreditOfCurrentParty_method(Request $request)
+    {
+      
+        $bb = 0;
+        
+        $credit = DB::table('salebook')->where('PartyName', $request->PartyName)->get('Credit');
+        for ($b = 0; $b < count($credit); $b++) {
+            $bb = $bb + $credit[$b]->Credit;
+        }
+        return $bb;
+    }
+
+    public function getDebit_method(Request $request)
+    {
+        $debit = DB::table('salebook')->get('Debit');
+        $aa = 0;
+        for ($a = 0; $a < count($debit); $a++) {
+            $aa = $aa + $debit[$a]->Debit;
+        }
+       
+        return $aa;
+    }
+    public function getCredit_method(Request $request)
+    {
+      
+        $bb = 0;
+        
+        $credit = DB::table('salebook')->get('Credit');
+        for ($b = 0; $b < count($credit); $b++) {
+            $bb = $bb + $credit[$b]->Credit;
+        }
+        return $bb;
+    }
 
     public function show_companydata_method()
     {

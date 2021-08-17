@@ -97,7 +97,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="/aew/public/partyWiseReport" class="nav-link">
+                    <a href="/aew/public/Report" class="nav-link">
                       <i class="far fa-dot-circle nav-icon"></i>
                       <p>Generate Report</p>
                     </a>

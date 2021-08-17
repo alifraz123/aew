@@ -11,7 +11,7 @@
                         ABDUL WAHAB ENGINEERING WORKS
                     </div>
                     <div style="text-align: center;" class="col-md-4">
-                        <h2 id="partyORcomplete">Complete Report</h2>
+                        <h2 id="partyORcomplete">Party Ledger</h2>
                         <p>Date : From <span style="font-weight: bold;" id="fromDate"></span>
                             To : <span style="font-weight: bold;" id="toDate"></span></p>
                     </div>
@@ -22,22 +22,30 @@
                 </div>
                 <hr>
 
-              
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><span>Party Code: </span> <span id="partycode"></span></p>
+                        <p><span>Party Name :</span> <span id="partyname"></span></p>
+                    </div>
+                    <div style="text-align: center;" class="col-md-4">
+                        <p><span>City: </span> <span id="city"></span></p>
+                        <p><span>Address :</span> <span id="address"></span></p>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+
+                </div>
 
                 <table id="table" class="table table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">Ref</th>
-                            <th scope="col">PartyName</th>
                             <th scope="col">Invoice</th>
                             <th scope="col">Date</th>
-                            <th scope="col">Rent</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Net Sale</th>
-                            <th scope="col">Cash</th>
-                            <th scope="col">Sender</th>
-                            <th scope="col">Reciever</th>
-                            <th scope="col">BuiltyNo</th>
+
+                            <th scope="col">Debit</th>
+                            <th scope="col">Credit</th>
                             <th scope="col">Remarks</th>
                             <th scope="col">Balance</th>
 
@@ -64,13 +72,38 @@
     var PartyName = url.searchParams.get('PartyName');
     var startDate = url.searchParams.get('startDate');
     var endDate = url.searchParams.get('endDate');
-    
+    document.getElementById('fromDate').innerHTML = startDate;
+    document.getElementById('toDate').innerHTML = endDate;
+    document.getElementById('partyname').innerHTML = PartyName;
+
 
     var token = '{{csrf_token()}}';
     $.ajax({
         type: "post",
-        url: "getCompleteReport",
+        url: "getPartyNameForReport",
         data: {
+            PartyName: PartyName,
+            _token: token
+        },
+        dataType: "json",
+        success: function(data) {
+            console.log(data);
+            document.getElementById('partycode').innerHTML = data[0].PartyCode;
+            document.getElementById('city').innerHTML = data[0].City;
+            document.getElementById('address').innerHTML = data[0].Adress;
+
+        },
+        error: function(req, status, error) {
+            console.log(error);
+        }
+    });
+
+    var token = '{{csrf_token()}}';
+    $.ajax({
+        type: "post",
+        url: "getPartyLedger",
+        data: {
+            PartyName: PartyName,
             startDate: startDate,
             endDate: endDate,
             _token: token
@@ -82,20 +115,14 @@
 
                 let output = '';
                 data.forEach(el => {
-                    var sum = parseInt(el.Rent)+parseInt(el.Total) ;
                     output += `
                                     <tr>
                                         <td>${el.Ref}</td>
-                                        <td>${el.PartyName}</td>
                                         <td>${el.invoice}</td>
                                         <td>${el.Date}</td>
-                                        <td>${el.Rent}</td>
-                                        <td>${el.Total}</td>
-                                        <td>${sum}</td>
-                                        <td>${el.Cash}</td>
-                                        <td>${el.Sender}</td>
-                                        <td>${el.Reciever}</td>
-                                        <td>${el.BuiltyNo}</td>
+                                        
+                                        <td>${el.Debit}</td>
+                                        <td>${el.Credit}</td>
                                         <td>${el.Remarks}</td>
                                         <td>${el.Balance}</td>
                                         </tr>
@@ -158,8 +185,9 @@
         var token = '{{csrf_token()}}';
                 $.ajax({
                     type: "post",
-                    url: "getDebit",
+                    url: "getDebitOfCurrentParty",
                     data: {
+                        PartyName: PartyName,
                         _token: token
                     },
                     dataType: "text",
@@ -173,8 +201,9 @@
                 });
                 $.ajax({
                     type: "post",
-                    url: "getCredit",
+                    url: "getCreditOfCurrentParty",
                     data: {
+                        PartyName: PartyName,
                         _token: token
                     },
                     dataType: "text",

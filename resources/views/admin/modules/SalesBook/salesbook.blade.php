@@ -10,8 +10,137 @@
                 <!-- left column -->
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-7">
 
+                            <div class="card card-dark">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h3 class="card-title">Sales Book Detail Data</h3>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <!-- Add Product Detail -->
+                                <div style="padding: 12px;line-height: 0.5;" class="card-body">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <!-- text input -->
+                                            <div class="form-group">
+                                                <label>Enter Item Name</label>
+                                                <select onchange="getSelectedProductData(this.id)" required name="ItemName[]" id="ItemName" class="form-control select2 select2bs4">
+                                                    <option disabled selected value="">Choose value</option>
+                                                    @foreach($items as $item)
+
+                                                    <option value="{{$item->ItemName}}"> {{$item->ItemName}}</option>
+                                                    @endforeach
+
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>Enter Rate</label>
+                                                <input type="text" name="Rate[]" id="Rate" required class="form-control" placeholder="Enter Rate">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>Enter Quantity</label>
+                                                <input type="text" oninput="countTotalWithQuantity()" name="Quantity[]" id="Quantity" required class="form-control" placeholder="Enter Quantity">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row bb">
+                                        <div class="col-sm-4">
+                                            <!-- text input -->
+                                            <div class="form-group">
+                                                <label>Enter Category</label>
+                                                <input type="text" name="Category[]" id="Category" required class="form-control" placeholder="Enter Category">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>Product Total</label>
+                                                <input type="text" name="productTotal[]" id="productTotal" required class="form-control" placeholder="Product Total">
+                                            </div>
+                                        </div>
+
+                                        <div style="padding-top: 16px;" class="col-sm-4">
+
+                                            <button style="width: 100%;" class="btn btn-primary addRow">mmm+</button>
+                                        </div>
+                                       
+                                    </div>
+                                    <table class="table">
+                                        <thead id="hide_by_default">
+                                            <tr>
+                                                <td>ItemName</td>
+                                                <td>Rate</td>
+                                                <td>Category</td>
+                                                <td>Quantity</td>
+                                                <td>P Total</td>
+                                                <td>Action</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="whereProductsShow">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+                            <script>
+                                $('.addRow').on('click', function() {
+                                    var ItemName = document.getElementById('ItemName').value;
+                                    var Rate = document.getElementById('Rate').value;
+                                    var Category = document.getElementById('Category').value;
+                                    var Quantity = document.getElementById('Quantity').value;
+                                    var productTotal = document.getElementById('productTotal').value;
+                                    // alert(aa);
+                                    
+                                    
+                                       
+                                        var tr =
+                                            "<tr>" +
+                                            "<td><input type='text' class='form-control' name='ItemName[]' value='" + ItemName + "'></td>" +
+                                            "<td><input type='text' name='Rate[]' class='form-control' value='" + Rate + "' ></td>" +
+                                            "<td><input type='text' name='Category[]'  value='" + Category + "' required class='form-control' ></td>" +
+                                            "<td><input type='text' oninput='changeInvoice_oninput()' name='Quantity[]' value='" + Quantity + "' required class='form-control' >" +
+                                            "<td><input type='text' name='productTotal[]' value='" + productTotal + "' required class='form-control' >" +
+                                            "<th> <a class='btn btn-danger deleteRow'>delete</a> </th>" +
+                                            "</tr>";
+                                           
+                                        $('tbody').append(tr);
+                                       
+
+                                    
+                                    $(".deleteRow").click(function() {
+                                        $(this).parent().parent().remove();
+                                        addTotal();
+                                    });
+                                    $("#ItemName").val('').trigger('change');
+                                    document.getElementById('Rate').value = '';
+                                    document.getElementById('Quantity').value = '';
+                                    document.getElementById('Category').value = '';
+                                    document.getElementById('productTotal').value = '';
+                                    addTotal();
+                                });
+                            </script>
+
+
+
+
+
+
+
+
+                        </div>
+                        <div class="col-md-5">
                             <div class="card card-dark">
                                 <div class="card-header">
                                     <div class="row">
@@ -20,8 +149,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form method="post" action="save_salesbookdata">
-                                    @csrf
+                               
                                     <div style="line-height: 00.5;
     padding-top: 10.2px;" class="card-body">
                                         <div class="row">
@@ -39,13 +167,12 @@
                                                 let currentDate = new Date();
                                                 let cDay = currentDate.getDate();
                                                 let cMonth = currentDate.getMonth() + 1;
-                                                if(cMonth>=1||cMonth<=9){
-                                                    cMonth = "0"+cMonth;
-                                                   
-                                                }
-                                                else{
+                                                if (cMonth >= 1 || cMonth <= 9) {
+                                                    cMonth = "0" + cMonth;
+
+                                                } else {
                                                     cMonth = cMonth;
-                                                   
+
                                                 }
                                                 let cYear = currentDate.getFullYear();
                                                 document.getElementById('Date').value = cYear + "-" + cMonth + "-" + cDay;
@@ -143,138 +270,19 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label>Enter Remarks</label>
-                                                    <textarea name="Remarks" id="Remarks" style="width: 100%;" rows="5" required class="form-control" placeholder="Enter Remarks">
+                                                    <textarea name="Remarks" id="Remarks" style="width: 100%;" rows="3" required class="form-control" placeholder="Enter Remarks">
 
                                             </textarea>
 
                                                 </div>
                                             </div>
+                                            <button onclick="sendMultipleData()" class="form-control btn btn-primary">Send Data</button>
                                         </div>
 
                                     </div>
 
-                                </form>
+                               
                             </div>
-
-
-                        </div>
-                        <div class="col-md-7">
-
-                            <div class="card card-dark">
-                                <div class="card-header">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h3 class="card-title">Sales Book Detail Data</h3>
-                                        </div>
-
-                                    </div>
-
-
-                                </div>
-                                <!-- Add Product Detail -->
-                                <div style="padding: 12px;line-height: 0.5;" class="card-body">
-                                    @csrf
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            <!-- text input -->
-                                            <div class="form-group">
-                                                <label>Enter Item Name</label>
-                                                <select onchange="getSelectedProductData(this.id)" required name="ItemName[]" id="ItemName" class="form-control select2 select2bs4">
-                                                    <option disabled selected value="">Choose value</option>
-                                                    @foreach($items as $item)
-
-                                                    <option value="{{$item->ItemName}}"> {{$item->ItemName}}</option>
-                                                    @endforeach
-
-                                                </select>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label>Enter Rate</label>
-                                                <input type="text" name="Rate[]" id="Rate" required class="form-control" placeholder="Enter Rate">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label>Enter Quantity</label>
-                                                <input type="text" oninput="countTotalWithQuantity()" name="Quantity[]" id="Quantity" required class="form-control" placeholder="Enter Quantity">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row bb">
-                                        <div class="col-sm-4">
-                                            <!-- text input -->
-                                            <div class="form-group">
-                                                <label>Enter Category</label>
-                                                <input type="text" name="Category[]" id="Category" required class="form-control" placeholder="Enter Category">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label>Product Total</label>
-                                                <input type="text" name="productTotal[]" id="productTotal" required class="form-control" placeholder="Product Total">
-                                            </div>
-                                        </div>
-
-                                        <div style="padding-top: 16px;" class="col-sm-4">
-
-                                            <button style="width: 100%;" class="btn btn-primary addRow">ADD PRODUCT +</button>
-                                        </div>
-                                        <button onclick="sendMultipleData()" class="form-control btn btn-primary">Send Data</button>
-                                    </div>
-                                    <table class="table">
-                                        <thead id="hide_by_default">
-                                            <tr>
-                                                <td>ItemName</td>
-                                                <td>Rate</td>
-                                                <td>Category</td>
-                                                <td>Quantity</td>
-                                                <td>P Total</td>
-                                                <td>Action</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-                            <script>
-                                $('.addRow').on('click', function() {
-                                    var ItemName = document.getElementById('ItemName').value;
-                                    var Rate = document.getElementById('Rate').value;
-                                    var Category = document.getElementById('Category').value;
-                                    var Quantity = document.getElementById('Quantity').value;
-                                    var productTotal = document.getElementById('productTotal').value;
-                                    // alert(aa);
-                                    if (Rate != '') {
-                                        var tr =
-                                            "<tr>" +
-                                            "<td><input type='text' class='form-control' name='ItemName[]' value='" + ItemName + "'></td>" +
-                                            "<td><input type='text' name='Rate[]' class='form-control' value='" + Rate + "' ></td>" +
-                                            "<td><input type='text' name='Category[]'  value='" + Category + "' required class='form-control' ></td>" +
-                                            "<td><input type='text' oninput='changeInvoice_oninput()' name='Quantity[]' value='" + Quantity + "' required class='form-control' >" +
-                                            "<td><input type='text' name='productTotal[]' value='" + productTotal + "' required class='form-control' >" +
-                                            "<th> <a class='btn btn-danger deleteRow'>delete</a> </th>" +
-                                            "</tr>";
-                                        $('tbody').append(tr);
-
-                                    }
-                                    $(".deleteRow").click(function() {
-                                        $(this).parent().parent().remove();
-                                        addTotal();
-                                    });
-                                    $("#ItemName").val('').trigger('change');
-                                    document.getElementById('Rate').value = '';
-                                    document.getElementById('Quantity').value = '';
-                                    document.getElementById('Category').value = '';
-                                    document.getElementById('productTotal').value = '';
-                                    addTotal();
-                                });
-                            </script>
 
                         </div>
                     </div>
@@ -283,8 +291,8 @@
             </div>
 
             <script>
-                function getSelectedProductData(id) {
-                    var id = document.getElementById(id).value;
+                function getSelectedProductData(partyName) {
+                    var id = document.getElementById(partyName).value;
                     var token = '{{csrf_token()}}';
                     $.ajax({
                         type: "post",
@@ -295,7 +303,7 @@
                         },
                         dataType: "json",
                         success: function(data) {
-                            // console.log(data);
+                            console.log(data);
                             document.getElementById('Rate').value = data[0].Rate;
                             document.getElementById('Category').value = data[0].Category;
                             document.getElementById('Quantity').value = data[0].Quantity;
@@ -353,36 +361,37 @@
                     var totalbill = parseInt(total) + parseInt(rent);
                     document.getElementById('FinalTotal').value = totalbill;
                 }
-                function changeInvoice_oninput(){
+
+                function changeInvoice_oninput() {
                     var ItemName = document.getElementsByName('ItemName[]');
                     var Rate = document.getElementsByName('Rate[]');
                     var Category = document.getElementsByName('Category[]');
                     var Quantity = document.getElementsByName('Quantity[]');
                     var productTotal = document.getElementsByName('productTotal[]');
-                   
-                    
-                    
+
+
+
                     for (var i = 1; i < Rate.length; i++) {
-                       
+
                         var ItemName1 = ItemName[i].value;
-                        
+
                         var Rate1 = Rate[i].value;
-                       
+
                         var Category1 = Category[i].value;
                         var Quantity1 = Quantity[i].value;
-                        
+
                         var productTotal1;
-                        productTotal[i].value = Rate1*Quantity1; 
-                       
-                      
+                        productTotal[i].value = Rate1 * Quantity1;
+
+
                         // alert(ItemName1+" "+Rate1+" "+Category1+" "+Quantity1+" "+productTotal1);
-                       
+
 
                     }
                 }
 
                 function sendMultipleData() {
-
+alert("ffffffffff");
                     var ItemName = document.getElementsByName('ItemName[]');
                     var Rate = document.getElementsByName('Rate[]');
                     var Category = document.getElementsByName('Category[]');
@@ -422,6 +431,7 @@
                     var Rent = document.getElementById('Rent').value;
                     var BuiltyNo = document.getElementById('BuiltyNo').value;
                     var Remarks = document.getElementById('Remarks').value;
+                    
                     if (partyname != '' && City != '' && Remarks != '' && Sender != '' && Reciever != '' && Rent != '' && BuiltyNo != '') {
 
                         var token = '{{csrf_token()}}';
@@ -453,14 +463,7 @@
                                 console.log(error);
                             }
                         });
-
-                        var table = document.getElementById('table');
-                        var row = document.getElementsByTagName('tbody')[0];
-                        deleteRow();
-
-                        function deleteRow() {
-                            row.parentNode.removeChild(row);
-                        };
+                        $("#whereProductsShow tr").remove(); 
                         document.getElementById('Date').value = '';
                         // document.getElementById('City').value = '';
                         $("#City").val('').trigger('change');
@@ -479,6 +482,7 @@
                         let cMonth = currentDate.getMonth() + 1;
                         let cYear = currentDate.getFullYear();
                         document.getElementById('Date').value = cYear + "-" + cMonth + "-" + cDay;
+                        // window.location.reload();
 
                     }
 
