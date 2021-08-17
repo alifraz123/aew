@@ -145,6 +145,7 @@ Route::get('showSaleInvoices', function () {
     }
 });
 Route::get('edit_invoice/{id}', [App\Http\Controllers\SaveSalesBookdataController::class, 'edit_invoice_method']);
+Route::get('edit_cashbook/{id}', [App\Http\Controllers\SaveSalesBookdataController::class, 'edit_cashbook_method']);
 
 Route::get('cashbook', function () {
     if (Auth::guest()) {
@@ -170,12 +171,16 @@ Route::get('edit_cashbookinvoice', function () {
     if (Auth::guest()) {
         return redirect('login');
     } else {
-        return view('admin/modules/cashbook/edit_cashbookinvoice');
+        $parties = DB::table('parties')->get();
+        return view('admin/modules/cashbook/edit_cashbookinvoice', ['parties' => $parties]);
     }
 });
 
+Route::get('getCashBookForEdit', [App\Http\Controllers\SaveSalesBookdataController::class, 'getCashBookForEdit_method']);
+
 Route::post('getPartyData', [App\Http\Controllers\Cashbook::class, 'getPartyData_method']);
 Route::post('sendCashbookData', [App\Http\Controllers\Cashbook::class, 'sendCashbookData_method']);
+Route::post('updateCashbookData', [App\Http\Controllers\Cashbook::class, 'updateCashbookData_method']);
 
 
 Route::get('Report', function () {

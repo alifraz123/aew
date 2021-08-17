@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="admin" style="height: 56px;" class="brand-link">
+    <a href="/aew/public/admin" style="height: 56px;" class="brand-link">
       <img src="" alt="" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light"></span>
     </a>
@@ -22,19 +22,19 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="parties" class="nav-link">
+                <a href="/aew/public/parties" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Parties</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="cities" class="nav-link">
+                <a href="/aew/public/cities" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Cities</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="items" class="nav-link">
+                <a href="/aew/public/items" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Items</p>
                 </a>

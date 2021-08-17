@@ -32,5 +32,13 @@ class Cashbook extends Controller
             "cb", $request->Date, "0", "0", "0", "0", "0", "0", "0", $request->Balance,$request->Cash, "0",$request->Cash, Auth::user()->name, $request->PartyName, $request->Remarks
         ]);
     }
+    public function updateCashbookData_method(Request $request){
+        $update = DB::table('salebook')->where('invoice',$request->invoice)->update([
+            'Cash'=>$request->Cash,
+            'Credit'=>$request->Cash,
+            'Remarks'=>$request->Remarks
+        ]);
+       
+    }
    
 }

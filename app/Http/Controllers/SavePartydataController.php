@@ -52,23 +52,6 @@ class SavePartydataController extends Controller
 
     public function sendMultipleData_edit(Request $request)
     {
-        // $ab = DB::table('salebook')->get();
-        //     $invoice_r = 1;
-        //     $final_total = $request->FinalTotal;
-        //     if($ab->count()!=0){
-        //         $invoice_id = DB::table('salebook')->latest('invoice')->first();
-        //         $invoice = $invoice_id->invoice+1; 
-        // }
-        // else
-        // {
-        //     $invoice = $invoice_r;
-        // }
-
-        // $data =  DB::insert("insert into salebook(Ref,invoice,Date,City,BuiltyNo,Sender,Reciever,Total
-        //     ,Rent,FinalTotal,Balance,Debit,Username,PartyName,Remarks)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",["sb",
-        //     $invoice,$request->Date,$request->City,$request->BuiltyNo,$request->Sender,$request->Reciever
-        //     ,$request->Total,$request->Rent,$final_total,$request->Balance,$final_total,Auth::user()->name,
-        //     $request->PartyName,$request->Remarks]);
         $update = DB::table('salebook')->where('invoice', $request->invoice_edit)->update([
             'Date' => $request->Date,
             'City' => $request->City,

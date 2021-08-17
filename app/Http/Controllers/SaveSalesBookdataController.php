@@ -12,7 +12,7 @@ class SaveSalesBookdataController extends Controller
         $salebook =  DB::insert("insert into salebook(Ref,invoice,Date,BuiltyNo,Sender,Reciever,Total,Rent,FinalTotal,Cash,Debit,Credit,Balance
         ,Username,PartyName,City,Remarks)
          values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",['sb',$party->invoice,$party->Date,$party->BuiltyNo,$party->Sender,$party->Reciever,
-         $party->Total,$party->Rent,$party->FinalTotal,$party->Cash,"debit","credit",$party->Balance,Auth::user()->name,$party->PartyName,$party->City,$party->Remarks]);
+         $party->Total,$party->Rent,$party->FinalTotal,$party->Cash,"debit",0,$party->Balance,Auth::user()->name,$party->PartyName,$party->City,$party->Remarks]);
          
         //  $salebook_detail =  DB::insert("insert into salebook_detail(invoice,ItemName,Rate,Category,Quantity)
         //  values(?,?,?,?,?)",[$random_invoice_number,$party->ItemName,$party->Rate,$party->Category,$party->Quantity]);
@@ -43,6 +43,16 @@ class SaveSalesBookdataController extends Controller
          $data->appends($request->all());
         return view('admin/modules/SalesBook/showSaleInvoices',['saleInvoices'=>$data]);
      }
+
+     public function getCashBookForEdit_method(Request $request){
+        $startDate = $_GET['startDate'];
+        $endDate = $_GET['endDate'];
+        $partyName = $_GET['PartyName'];
+        $data = DB::table('salebook')->whereBetween('Date',[$startDate,$endDate])
+        ->where('PartyName',$partyName)->where('Ref','cb')->paginate(5);
+        $data->appends($request->all());
+       return view('admin/modules/cashbook/showCashbook',['saleInvoices'=>$data]);
+    }
      public function edit_invoice_method($id){
          $salebook = DB::table('salebook')->where('invoice',$id)->get()->first();
          $salebook_detail = DB::table('salebook_detail')->where('invoice',$id)->get();
@@ -52,6 +62,14 @@ class SaveSalesBookdataController extends Controller
          return view('admin/modules/SalesBook/edit_invoice',
          ['salebook'=>$salebook,'salebook_detail'=>$salebook_detail,'parties'=>$parties,'items'=>$items,'cities'=>$cities]);
      }
+     public function edit_cashbook_method($id){
+        $cashbook = DB::table('salebook')->where('invoice',$id)->get()->first();
+        
+        $partyCode_and_partyAddress = DB::table('parties')->where('PartyName',$cashbook->PartyName)->get()->first();
+        $parties = DB::table('parties')->get();
+        return view('admin/modules/cashbook/edit_cashbook',
+        ['cashbook'=>$cashbook,'parties'=>$parties,'partyCode_and_partyAddress'=>$partyCode_and_partyAddress]);
+    }
 
      public function show_companydata_method(){
        return  $parties = DB::table('salebook')->get();

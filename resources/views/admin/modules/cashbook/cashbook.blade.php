@@ -183,7 +183,7 @@
                             console.log(error);
                         }
                     });
-
+console.log(document.getElementById('PartyName').value);
                     $.ajax({
                         type: "post",
                         url: "getBalanceOfCurrentParty",
