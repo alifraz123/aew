@@ -13,7 +13,7 @@ class SavePartydataController extends Controller
         $data =  DB::insert("insert into parties(PartyCode,PartyName,CNIC,NTN,SalesTex,Cell,Adress,City)
         values(?,?,?,?,?,?,?,?)", [$party->PartyCode, $party->PartyName, $party->CNIC, $party->NTN, $party->SalesTex, $party->Cell, $party->Adress, $party->City]);
         if ($data) {
-            return redirect('/parties');
+            return redirect('/show_companydata');
         }
     }
 
@@ -146,16 +146,18 @@ class SavePartydataController extends Controller
         return $bb;
     }
 
-    public function show_companydata_method()
+    public function show_companydata_method(Request $request)
     {
-        return  $parties = DB::table('parties')->get();
+         $parties = DB::table('parties')->paginate(5);
+        //  $parties->appends($request->all());
+         return view('admin/modules/Parties/company',['parties'=>$parties]);
     }
     public function delete_companydata_method($id)
     {
         DB::table('parties')
             ->where('PartyCode', $id)
             ->delete();
-        return redirect('/parties');
+        return redirect('/show_companydata');
     }
     public function edit_companydata_method($id)
     {
@@ -181,7 +183,7 @@ class SavePartydataController extends Controller
             ]);
         // return $data;
         if ($data) {
-            return redirect('/parties');
+            return redirect('/show_companydata');
         }
     }
 }

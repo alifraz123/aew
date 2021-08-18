@@ -169,9 +169,11 @@
                                                 let cMonth = currentDate.getMonth() + 1;
                                                 if (cMonth >= 1 || cMonth <= 9) {
                                                     cMonth = "0" + cMonth;
+                                                    alert(cMonth);
 
                                                 } else {
                                                     cMonth = cMonth;
+                                                    alert(cMonth);
 
                                                 }
                                                 let cYear = currentDate.getFullYear();
@@ -391,7 +393,7 @@
                 }
 
                 function sendMultipleData() {
-alert("ffffffffff");
+
                     var ItemName = document.getElementsByName('ItemName[]');
                     var Rate = document.getElementsByName('Rate[]');
                     var Category = document.getElementsByName('Category[]');

@@ -10,19 +10,21 @@ class SaveItemsdataController extends Controller
         $data =  DB::insert("insert into items(ItemName,Category,Rate,Quantity)
          values(?,?,?,?)",[$party->ItemName,$party->Category,$party->Rate,$party->Quantity]);
          if($data){
-             return redirect('/items');
+             return redirect('/show_itemsdata');
          }
  
      }
-     public function show_companydata_method(){
-       return  $parties = DB::table('items')->get();
+     public function show_companydata_method(Request $request){
+         $items = DB::table('items')->paginate(5);
+        $items->appends($request->all());
+        return view('admin/modules/Items/item',['items'=>$items]);
         
      }
      public function delete_companydata_method($id){
          DB::table('items')
              ->where('ItemName', $id)
              ->delete();
-             return redirect('/items');
+             return redirect('/show_itemsdata');
      }
      public function edit_companydata_method($id){
         $editdata =  DB::table('items')
@@ -42,7 +44,7 @@ class SaveItemsdataController extends Controller
          ]);
          // return $data;
          if($data){
-             return redirect('/items');
+             return redirect('/show_itemsdata');
          }
      }
 }

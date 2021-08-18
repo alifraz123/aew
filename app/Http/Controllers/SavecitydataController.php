@@ -9,19 +9,21 @@ class SavecitydataController extends Controller
     public function save_citydata_method(Request $party){
         $data =  DB::insert("insert into cities(CityName) values(?)",[$party->CityName]);
          if($data){
-             return redirect('/cities');
+             return redirect('/show_citydata');
          }
  
      }
-     public function show_companydata_method(){
-       return  $parties = DB::table('cities')->get();
+     public function show_companydata_method(Request $request){
+         $cities = DB::table('cities')->paginate(5);
+         $cities->appends($request->all());
+         return view('admin/modules/Cities/city',['cities'=>$cities]);
         
      }
      public function delete_companydata_method($id){
          DB::table('cities')
              ->where('CityName', $id)
              ->delete();
-             return redirect('/cities');
+             return redirect('/show_citydata');
      }
      public function edit_companydata_method($id){
         $editdata =  DB::table('cities')
@@ -38,7 +40,7 @@ class SavecitydataController extends Controller
          ]);
          // return $data;
          if($data){
-             return redirect('/cities');
+             return redirect('/show_citydata');
          }
      }
 }

@@ -199,6 +199,33 @@ Route::get('PartyLedger', function () {
         return view('admin/modules/reports/PartyLedger');
     }
 });
+
+Route::get('enterPartyData', function () {
+    if (Auth::guest()) {
+        return redirect('login');
+    } else {
+        $parties = DB::table('cities')->get();
+        $count_result = DB::table('parties')->latest('PartyCode')->first();
+        return view('admin/modules/Parties/enterPartyData', ['data' => $parties, 'pc' => $count_result->PartyCode + 1]);
+    }
+});
+
+Route::get('enterItemData', function () {
+    if (Auth::guest()) {
+        return redirect('login');
+    } else {
+      
+        return view('admin/modules/Items/enterItemData');
+    }
+});
+Route::get('enterCityData', function () {
+    if (Auth::guest()) {
+        return redirect('login');
+    } else {
+      
+        return view('admin/modules/Cities/enterCityData');
+    }
+});
 Route::get('PartyDetailedLedger', function () {
     if (Auth::guest()) {
         return redirect('login');

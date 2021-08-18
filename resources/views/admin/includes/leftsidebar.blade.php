@@ -22,19 +22,19 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/aew/public/parties" class="nav-link">
+                <a href="/aew/public/show_companydata" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Parties</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/aew/public/cities" class="nav-link">
+                <a href="/aew/public/show_citydata" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Cities</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/aew/public/items" class="nav-link">
+                <a href="/aew/public/show_itemsdata" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Items</p>
                 </a>
