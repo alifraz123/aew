@@ -165,6 +165,8 @@
                             dataType: "text",
                             success: function(data) {
                                 console.log(data);
+                               
+
                             },
                             error: function(req, status, error) {
                                 console.log(error);

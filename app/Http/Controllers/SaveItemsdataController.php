@@ -30,7 +30,6 @@ class SaveItemsdataController extends Controller
         $editdata =  DB::table('items')
          ->where('ItemName', $id)
          ->get();
-         // return $editdata;
          return view('/admin/modules/Items/itemedit',['data'=>$editdata]);
      }
      public function update_companydata_method(Request $updatecompany){

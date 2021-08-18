@@ -17,7 +17,7 @@
                       
                         <form method="post" action="../edit_itemsdata">
                             @csrf
-                            <input type="text" value="{{$data[0]->ItemName}}" name="id">
+                            <input type="hidden" value="{{$data[0]->ItemName}}" name="id">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-5">

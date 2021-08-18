@@ -17,7 +17,7 @@
                       
                         <form method="post" action="../edit_citydata">
                             @csrf
-                            <input type="text" value="{{$data[0]->CityName}}" name="id">
+                            <input type="hidden" value="{{$data[0]->CityName}}" name="id">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-5">

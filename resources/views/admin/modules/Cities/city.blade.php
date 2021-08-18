@@ -7,13 +7,13 @@
         <div style="margin-top: 1rem;" class="container-fluid">
         
         <div class="row">
-                <a style="margin-bottom: 20px;" href="enterCityData"> <button class="btn btn-primary">Insert Items</button> </a>
+                <a style="margin-bottom: 20px;" href="enterCityData"> <button class="btn btn-primary">Insert City</button> </a>
             </div>
 
 
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Company Data Show Table</h3>
+                    <h3 class="card-title">City Data Show Table</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">

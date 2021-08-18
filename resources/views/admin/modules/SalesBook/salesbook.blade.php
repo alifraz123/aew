@@ -72,7 +72,7 @@
 
                                         <div style="padding-top: 16px;" class="col-sm-4">
 
-                                            <button style="width: 100%;" class="btn btn-primary addRow">mmm+</button>
+                                            <button style="width: 100%;" class="btn btn-primary addRow">+</button>
                                         </div>
                                        
                                     </div>
@@ -169,11 +169,11 @@
                                                 let cMonth = currentDate.getMonth() + 1;
                                                 if (cMonth >= 1 || cMonth <= 9) {
                                                     cMonth = "0" + cMonth;
-                                                    alert(cMonth);
+                                                    // alert(cMonth);
 
                                                 } else {
                                                     cMonth = cMonth;
-                                                    alert(cMonth);
+                                                    // alert(cMonth);
 
                                                 }
                                                 let cYear = currentDate.getFullYear();

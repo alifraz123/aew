@@ -23,10 +23,8 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/admin');
 });
-
-
 Route::get('/admin', function () {
     if (Auth::guest()) {
         return redirect('login');
@@ -57,6 +55,16 @@ Route::get('/partyeditform', function () {
     }
 });
 Route::post('edit_companydata', [App\Http\Controllers\SavePartydataController::class, 'update_companydata_method']);
+Route::get('enterPartyData', function () {
+    if (Auth::guest()) {
+        return redirect('login');
+    } else {
+        $parties = DB::table('cities')->get();
+        $count_result = DB::table('parties')->latest('PartyCode')->first();
+        return view('admin/modules/Parties/enterPartyData', ['data' => $parties, 'pc' => $count_result->PartyCode + 1]);
+    }
+});
+
 
 
 Route::get('/cities', function () {
@@ -78,7 +86,14 @@ Route::get('/cityeditform', function () {
     }
 });
 Route::post('edit_citydata', [App\Http\Controllers\SavecitydataController::class, 'update_companydata_method']);
-
+Route::get('enterCityData', function () {
+    if (Auth::guest()) {
+        return redirect('login');
+    } else {
+      
+        return view('admin/modules/Cities/enterCityData');
+    }
+});
 
 Route::get('/items', function () {
     if (Auth::guest()) {
@@ -99,6 +114,16 @@ Route::get('/itemesditform', function () {
     }
 });
 Route::post('edit_itemsdata', [App\Http\Controllers\SaveItemsdataController::class, 'update_companydata_method']);
+Route::get('enterItemData', function () {
+    if (Auth::guest()) {
+        return redirect('login');
+    } else {
+      
+        return view('admin/modules/Items/enterItemData');
+    }
+});
+
+
 
 Route::get('/salesbook', function () {
     if (Auth::guest()) {
@@ -117,9 +142,6 @@ Route::get('/salesbook', function () {
         return view('admin/modules/SalesBook/salesbook', ['data' => $cities, 'parties' => $parties, 'productSaleId' => $productSaleId, 'items' => $items]);
     }
 });
-
-
-
 Route::post('getSelectedProductData', [App\Http\Controllers\SaveSalesBookdataController::class, 'getSelectedProductData_method']);
 
 Route::post('getBalanceOfCurrentParty', [App\Http\Controllers\SavePartydataController::class, 
@@ -146,7 +168,6 @@ Route::get('showSaleInvoices', function () {
 });
 Route::get('edit_invoice/{id}', [App\Http\Controllers\SaveSalesBookdataController::class, 'edit_invoice_method']);
 Route::get('edit_cashbook/{id}', [App\Http\Controllers\SaveSalesBookdataController::class, 'edit_cashbook_method']);
-
 Route::get('cashbook', function () {
     if (Auth::guest()) {
         return redirect('login');
@@ -175,9 +196,7 @@ Route::get('edit_cashbookinvoice', function () {
         return view('admin/modules/cashbook/edit_cashbookinvoice', ['parties' => $parties]);
     }
 });
-
 Route::get('getCashBookForEdit', [App\Http\Controllers\SaveSalesBookdataController::class, 'getCashBookForEdit_method']);
-
 Route::post('getPartyData', [App\Http\Controllers\Cashbook::class, 'getPartyData_method']);
 Route::post('sendCashbookData', [App\Http\Controllers\Cashbook::class, 'sendCashbookData_method']);
 Route::post('updateCashbookData', [App\Http\Controllers\Cashbook::class, 'updateCashbookData_method']);
@@ -191,39 +210,11 @@ Route::get('Report', function () {
         return view('admin/modules/reports/Report', ['parties' => $parties]);
     }
 });
-
 Route::get('PartyLedger', function () {
     if (Auth::guest()) {
         return redirect('login');
     } else {
         return view('admin/modules/reports/PartyLedger');
-    }
-});
-
-Route::get('enterPartyData', function () {
-    if (Auth::guest()) {
-        return redirect('login');
-    } else {
-        $parties = DB::table('cities')->get();
-        $count_result = DB::table('parties')->latest('PartyCode')->first();
-        return view('admin/modules/Parties/enterPartyData', ['data' => $parties, 'pc' => $count_result->PartyCode + 1]);
-    }
-});
-
-Route::get('enterItemData', function () {
-    if (Auth::guest()) {
-        return redirect('login');
-    } else {
-      
-        return view('admin/modules/Items/enterItemData');
-    }
-});
-Route::get('enterCityData', function () {
-    if (Auth::guest()) {
-        return redirect('login');
-    } else {
-      
-        return view('admin/modules/Cities/enterCityData');
     }
 });
 Route::get('PartyDetailedLedger', function () {
@@ -240,22 +231,18 @@ Route::get('completeReport', function () {
         return view('admin/modules/reports/completeReport');
     }
 });
-
 Route::post('getPartyNameForReport',function(Request $request){
 return DB::table('parties')->where('PartyName',$request->PartyName)->get();
 });
-
 Route::post('getPartyLedger', function (Request $request) {
 
     return DB::table('salebook')->whereBetween('Date', [$request->startDate, $request->endDate])
         ->where('PartyName', $request->PartyName)->get();
 });
-
 Route::post('getCompleteReport', function (Request $request) {
 
     return DB::table('salebook')->whereBetween('Date', [$request->startDate, $request->endDate])->get();
 });
-
 Route::post('getDebitOfCurrentParty', [App\Http\Controllers\SavePartydataController::class, 
 'getDebitOfCurrentParty_method']);
 

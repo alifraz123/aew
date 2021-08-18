@@ -18,7 +18,7 @@
                       
                         <form method="post" action="../edit_companydata">
                             @csrf
-                            <input type="text" value="{{$data[0]->PartyCode}}" name="id">
+                            <input type="hidden" value="{{$data[0]->PartyCode}}" name="id">
                             <div class="card-body">
                             <div class="row">
                                     <div class="col-sm-5">
