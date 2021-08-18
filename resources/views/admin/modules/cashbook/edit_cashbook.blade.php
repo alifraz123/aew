@@ -151,7 +151,7 @@
                     var invoice = document.getElementById('invoice').value;
 
                     if (Cash != '' && Remarks != '') {
-                        console.log(Cash + Remarks + invoice);
+                       
                         var token = '{{csrf_token()}}';
                         $.ajax({
                             type: "post",
