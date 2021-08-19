@@ -13,7 +13,10 @@ class SavePartydataController extends Controller
         $data =  DB::insert("insert into parties(PartyCode,PartyName,CNIC,NTN,SalesTex,Cell,Adress,City)
         values(?,?,?,?,?,?,?,?)", [$party->PartyCode, $party->PartyName, $party->CNIC, $party->NTN, $party->SalesTex, $party->Cell, $party->Adress, $party->City]);
         if ($data) {
-            return redirect('/show_companydata');
+            return redirect('/show_companydata')->with('status','inserted successfuly');
+        }
+        else{
+            return redirect('/show_companydata')->with('failed','Not inserted ');
         }
     }
 

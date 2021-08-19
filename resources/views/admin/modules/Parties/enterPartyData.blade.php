@@ -39,7 +39,7 @@
                                         <!-- text input -->
                                         <div class="form-group">
                                             <label>Enter CNIC</label>
-                                            <input type="text" name="CNIC" required class="form-control" placeholder="Enter CNIC">
+                                            <input type="number" name="CNIC" required class="form-control" placeholder="Enter CNIC">
                                         </div>
                                     </div>
                                     <div class="col-sm-5">
@@ -60,7 +60,7 @@
                                     <div class="col-sm-5">
                                         <div class="form-group">
                                             <label>Enter Cell</label>
-                                            <input type="text" name="Cell" required class="form-control" placeholder="Enter Sales Tax">
+                                            <input type="number" name="Cell" required class="form-control" placeholder="Enter Sales Tax">
                                         </div>
                                     </div>
                                 </div>

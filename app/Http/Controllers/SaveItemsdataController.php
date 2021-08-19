@@ -10,9 +10,12 @@ class SaveItemsdataController extends Controller
         $data =  DB::insert("insert into items(ItemName,Category,Rate,Quantity)
          values(?,?,?,?)",[$party->ItemName,$party->Category,$party->Rate,$party->Quantity]);
          if($data){
-             return redirect('/show_itemsdata');
+             return redirect('/show_itemsdata')->with('status','inserted successfuly');
          }
- 
+         else{
+            return redirect('/show_itemsdata')->with('failed','Not inserted ');
+         }
+        
      }
      public function show_companydata_method(Request $request){
          $items = DB::table('items')->paginate(5);

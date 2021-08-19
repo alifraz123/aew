@@ -4,6 +4,9 @@
 <div class="content-wrapper">
 
     <section class="content">
+    <div id="show_insert_status">
+
+</div>
         <div style="margin-top: 1rem;" class="container-fluid">
 
             <div class="row">
@@ -42,7 +45,7 @@
                                             <!-- text input -->
                                             <div class="form-group">
                                                 <label>Party Code</label>
-                                                <input type="text" disabled value="{{$partyCode_and_partyAddress->PartyCode}}" name="PartyCode" id="PartyCode" class="form-control">
+                                                <input type="number" disabled value="{{$partyCode_and_partyAddress->PartyCode}}" name="PartyCode" id="PartyCode" class="form-control">
 
                                             </div>
                                         </div>
@@ -91,7 +94,7 @@
                                             <!-- text input -->
                                             <div class="form-group">
                                                 <label>Enter Cash</label>
-                                                <input type="text" class="form-control" value="{{$cashbook->Cash}}" name="Cash" placeholder="Enter Cash" id="Cash">
+                                                <input type="number" class="form-control" value="{{$cashbook->Cash}}" name="Cash" placeholder="Enter Cash" id="Cash">
 
                                             </div>
                                         </div>
@@ -165,11 +168,25 @@
                             dataType: "text",
                             success: function(data) {
                                 console.log(data);
+                                var output = `
+                                <div class="alert alert-success">
+            <button class="close" style="font-size: 30px;" data-dismiss="alert">&times</button>
+            Inserted Successfuly
+        </div>    
+                                `;
+                                    document.getElementById('show_insert_status').innerHTML = output;
                                
 
                             },
                             error: function(req, status, error) {
                                 console.log(error);
+                                var output = `
+                                <div class="alert alert-danger">
+            <button class="close" style="font-size: 30px;" data-dismiss="alert">&times</button>
+            Not Inserted
+        </div>
+                                `;
+                                    document.getElementById('show_insert_status').innerHTML = output;
                             }
                         });
                     }

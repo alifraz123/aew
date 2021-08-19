@@ -4,6 +4,17 @@
 <div class="content-wrapper">
 
     <section class="content">
+    @if(session('status'))
+        <div class="alert alert-success">
+            <button class="close" style="font-size: 30px;" data-dismiss="alert">&times</button>
+            {{session('status')}}
+        </div>
+        @elseif(session('failed'))
+        <div class="alert alert-danger">
+            <button class="close" style="font-size: 30px;" data-dismiss="alert">&times</button>
+            {{session('failed')}}
+        </div>
+        @endif
         <div style="margin-top: 1rem;" class="container-fluid">
         
         <div class="row">

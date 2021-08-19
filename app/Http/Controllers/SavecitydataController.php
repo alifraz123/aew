@@ -9,7 +9,10 @@ class SavecitydataController extends Controller
     public function save_citydata_method(Request $party){
         $data =  DB::insert("insert into cities(CityName) values(?)",[$party->CityName]);
          if($data){
-             return redirect('/show_citydata');
+             return redirect('/show_citydata')->with('status','Inserted Successfuly');
+         }
+         else{
+            return redirect('/show_citydata')->with('failed','Not Inserted ');
          }
  
      }

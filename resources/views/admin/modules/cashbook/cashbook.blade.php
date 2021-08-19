@@ -4,6 +4,9 @@
 <div class="content-wrapper">
 
     <section class="content">
+        <div id="show_insert_status">
+
+        </div>
         <div style="margin-top: 1rem;" class="container-fluid">
 
             <div class="row">
@@ -49,7 +52,7 @@
                                                 <!-- text input -->
                                                 <div class="form-group">
                                                     <label>Enter Party Name</label>
-                                                    <select name="PartyName" onchange="getPartyData(this)" id="PartyName" required class="form-control select2 select2bs4" placeholder="Enter Party Name">
+                                                    <select name="PartyName" onchange="getPartyData()" id="PartyName" required class="form-control select2 select2bs4" placeholder="Enter Party Name">
                                                         <option disabled selected value="">Choose value</option>
                                                         @foreach($parties as $partydata)
                                                         <option value="{{$partydata->PartyName}}"> {{$partydata->PartyName}}</option>
@@ -63,7 +66,7 @@
                                                 <!-- text input -->
                                                 <div class="form-group">
                                                     <label>Party Code</label>
-                                                    <input type="text" name="PartyCode" id="PartyCode" class="form-control">
+                                                    <input type="number" name="PartyCode" id="PartyCode" class="form-control">
 
                                                 </div>
                                             </div>
@@ -81,7 +84,7 @@
                                                 </div>
 
                                             </div>
-                                          
+
                                         </div>
 
                                     </div>
@@ -112,14 +115,14 @@
                                             <!-- text input -->
                                             <div class="form-group">
                                                 <label>Enter Cash</label>
-                                                <input type="text" class="form-control" name="Cash" placeholder="Enter Cash" id="Cash">
+                                                <input type="number" class="form-control" name="Cash" placeholder="Enter Cash" id="Cash">
 
                                             </div>
                                         </div>
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label>Balance</label>
-                                                <input type="text" name="Balance[]" id="Balance" required class="form-control" placeholder="Your Balance">
+                                                <input type="number" disabled name="Balance[]" id="Balance" required class="form-control" placeholder="Your Balance">
                                             </div>
                                         </div>
 
@@ -183,7 +186,7 @@
                             console.log(error);
                         }
                     });
-console.log(document.getElementById('PartyName').value);
+                  
                     $.ajax({
                         type: "post",
                         url: "getBalanceOfCurrentParty",
@@ -202,7 +205,7 @@ console.log(document.getElementById('PartyName').value);
                             console.log(error);
                         }
                     });
-                    
+
                 }
 
 
@@ -221,55 +224,71 @@ console.log(document.getElementById('PartyName').value);
                     var todayDate = cYear + "-" + cMonth + "-" + cDay;
 
                     var PartyName = document.getElementById('PartyName').value;
-                    
+
                     var PartyCode = document.getElementById('PartyCode').value;
                     var Adress = document.getElementById('Adress').value;
                     // var invoice = document.getElementById('invoice').value;
                     var Cash = document.getElementById('Cash').value;
                     var Balance = document.getElementById('Balance').value;
                     var Remarks = document.getElementById('Remarks').value;
-                    if (PartyName != '' && PartyCode != '' && Adress != '' &&  Cash != '' &&
+                    if (PartyName != '' && PartyCode != '' && Adress != '' && Cash != '' &&
                         Balance != '' && Remarks != '') {
 
                         var token = '{{csrf_token()}}';
                         $.ajax({
-                            type: "post",
-                            url: "sendCashbookData",
-                            data: {
+                                type: "post",
+                                url: "sendCashbookData",
+                                data: {
 
 
-                                PartyName: document.getElementById('PartyName').value,
-                                Date: todayDate,
-                                PartyCode: document.getElementById('PartyCode').value,
-                                Adress: document.getElementById('Adress').value,
-                                // invoice: document.getElementById('invoice').value,
-                                Cash: document.getElementById('Cash').value,
-                                Balance: document.getElementById('Balance').value,
-                                Remarks: document.getElementById('Remarks').value,
-                                _token: token
-                            },
-                            dataType: "text",
-                            success: function(data) {
-                                console.log(data);
-                                document.getElementById('PartyName').value = '';
-                        document.getElementById('PartyCode').value = '';
-                        document.getElementById('Adress').value = '';
-                        
-                        document.getElementById('Cash').value = '';
-                        document.getElementById('Balance').value = '';
-                        document.getElementById('Remarks').value = '';
+                                    PartyName: document.getElementById('PartyName').value,
+                                    Date: todayDate,
+                                    PartyCode: document.getElementById('PartyCode').value,
+                                    Adress: document.getElementById('Adress').value,
+                                    // invoice: document.getElementById('invoice').value,
+                                    Cash: document.getElementById('Cash').value,
+                                    Balance: document.getElementById('Balance').value,
+                                    Remarks: document.getElementById('Remarks').value,
+                                    _token: token
+                                },
+                                dataType: "text",
+                                success: function(data) {
+                                    console.log(data);
+                                    document.getElementById('PartyName').value = '';
+                                    document.getElementById('PartyCode').value = '';
+                                    document.getElementById('Adress').value = '';
 
-                            },
-                            error: function(req, status, error) {
-                                console.log(error);
+                                    document.getElementById('Cash').value = '';
+                                    document.getElementById('Balance').value = '';
+                                    document.getElementById('Remarks').value = '';
+
+                                    var output = `
+                                <div class="alert alert-success">
+            <button class="close" style="font-size: 30px;" data-dismiss="alert">&times</button>
+            Inserted Successfuly
+        </div>    
+                                `;
+                                    document.getElementById('show_insert_status').innerHTML = output;
+
+                                },
+                                error: function(req, status, error) {
+                                    console.log(error);
+                                    var output = `
+                                <div class="alert alert-danger">
+            <button class="close" style="font-size: 30px;" data-dismiss="alert">&times</button>
+            Not Inserted
+        </div>
+                                `;
+                                    document.getElementById('show_insert_status').innerHTML = output;
+                                
                             }
                         });
 
 
-                        
 
 
-                    }
+
+                }
 
 
 

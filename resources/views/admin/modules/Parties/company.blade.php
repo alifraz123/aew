@@ -1,11 +1,24 @@
 @extends('admin/layouts/mainlayout')
 @section('content')
 
+
+
+
 <div class="content-wrapper">
 
     <section class="content">
 
-
+        @if(session('status'))
+        <div class="alert alert-success">
+            <button class="close" style="font-size: 30px;" data-dismiss="alert">&times</button>
+            {{session('status')}}
+        </div>
+        @elseif(session('failed'))
+        <div class="alert alert-danger">
+            <button class="close" style="font-size: 30px;" data-dismiss="alert">&times</button>
+            {{session('failed')}}
+        </div>
+        @endif
         <div style="margin-top: 1rem;" class="container-fluid">
             <div class="row">
                 <a style="margin-bottom: 20px;" href="enterPartyData"> <button class="btn btn-primary">Insert Party</button> </a>
@@ -70,31 +83,7 @@
 </div>
 </section>
 
-<script>
-    //     fetch('show_companydata')
-    //   .then(response => response.json())
-    //   .then(data => {
-    //   let output = '';
-    //   data.forEach(el=>{
-    //     output += `
-    //                            <tr>
 
-    //                                <td> ${el.PartyCode}</td>
-    //                                <td>${el.PartyName}</td>
-    //                                <td> ${el.CNIC}</td>
-    //                                <td>${el.NTN}</td>
-    //                                <td> ${el.SalesTex}</td>
-    //                                <td>${el.Cell}</td>
-    //                                <td> ${el.Adress}</td>
-    //                                <td>${el.City}</td>
-    //                                <td><a href='edit_partydata/${el.PartyCode}' class="btn btn-success">Edit</a> </td>
-    //                                <td><a href='delete_partydata/${el.PartyCode}' class="btn btn-danger">Delete</a> </td>
-    //                            </tr>
-    //     `;
-    //   });
-    //   document.getElementById('companydata').innerHTML = output;
-    // });
-</script>
 
 
 

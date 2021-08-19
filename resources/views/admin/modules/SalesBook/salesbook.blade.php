@@ -4,6 +4,9 @@
 <div class="content-wrapper">
 
     <section class="content">
+    <div id="show_insert_status">
+
+        </div>
         <div style="margin-top: 1rem;" class="container-fluid">
 
             <div class="row">
@@ -45,13 +48,13 @@
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label>Enter Rate</label>
-                                                <input type="text" name="Rate[]" id="Rate" required class="form-control" placeholder="Enter Rate">
+                                                <input type="number" name="Rate[]" id="Rate" required class="form-control" placeholder="Enter Rate">
                                             </div>
                                         </div>
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label>Enter Quantity</label>
-                                                <input type="text" oninput="countTotalWithQuantity()" name="Quantity[]" id="Quantity" required class="form-control" placeholder="Enter Quantity">
+                                                <input type="number" oninput="countTotalWithQuantity()" name="Quantity[]" id="Quantity" required class="form-control" placeholder="Enter Quantity">
                                             </div>
                                         </div>
                                     </div>
@@ -66,7 +69,7 @@
                                         <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label>Product Total</label>
-                                                <input type="text" name="productTotal[]" id="productTotal" required class="form-control" placeholder="Product Total">
+                                                <input type="number" name="productTotal[]" id="productTotal" required class="form-control" placeholder="Product Total">
                                             </div>
                                         </div>
 
@@ -108,10 +111,10 @@
                                         var tr =
                                             "<tr>" +
                                             "<td><input type='text' class='form-control' name='ItemName[]' value='" + ItemName + "'></td>" +
-                                            "<td><input type='text' name='Rate[]' class='form-control' value='" + Rate + "' ></td>" +
+                                            "<td><input type='number' name='Rate[]' class='form-control' value='" + Rate + "' ></td>" +
                                             "<td><input type='text' name='Category[]'  value='" + Category + "' required class='form-control' ></td>" +
-                                            "<td><input type='text' oninput='changeInvoice_oninput()' name='Quantity[]' value='" + Quantity + "' required class='form-control' >" +
-                                            "<td><input type='text' name='productTotal[]' value='" + productTotal + "' required class='form-control' >" +
+                                            "<td><input type='number' oninput='changeInvoice_oninput()' name='Quantity[]' value='" + Quantity + "' required class='form-control' >" +
+                                            "<td><input type='number' name='productTotal[]' value='" + productTotal + "' required class='form-control' >" +
                                             "<th> <a class='btn btn-danger deleteRow'>delete</a> </th>" +
                                             "</tr>";
                                            
@@ -241,7 +244,7 @@
                                                 <!-- text input -->
                                                 <div class="form-group">
                                                     <label>Enter Rent</label>
-                                                    <input type="text" oninput="add_total_and_rent()" name="Rent" id="Rent" required class="form-control" placeholder="Enter Rent">
+                                                    <input type="number" oninput="add_total_and_rent()" name="Rent" id="Rent" required class="form-control" placeholder="Enter Rent">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -459,10 +462,25 @@
                             dataType: "text",
                             success: function(data) {
                                 console.log(data);
+                                var output =`
+                                <div class="alert alert-success">
+            <button class="close" style="font-size: 30px;" data-dismiss="alert">&times</button>
+            Inserted Successfuly
+        </div>    
+                                `;
+                                document.getElementById('show_insert_status').innerHTML = output;
+
 
                             },
                             error: function(req, status, error) {
                                 console.log(error);
+                                var output =`
+                                <div class="alert alert-danger">
+            <button class="close" style="font-size: 30px;" data-dismiss="alert">&times</button>
+            Not Inserted
+        </div>
+                                `;
+                                document.getElementById('show_insert_status').innerHTML = output;
                             }
                         });
                         $("#whereProductsShow tr").remove(); 

@@ -37,13 +37,13 @@
                                         <!-- text input -->
                                         <div class="form-group">
                                             <label>Enter Rate</label>
-                                            <input type="text" name="Rate" required class="form-control" placeholder="Enter Rate">
+                                            <input type="number" name="Rate" required class="form-control" placeholder="Enter Rate">
                                         </div>
                                     </div>
                                     <div class="col-sm-5">
                                         <div class="form-group">
                                             <label>Enter Quantity</label>
-                                            <input type="text" name="Quantity" required class="form-control" placeholder="Enter Quantity">
+                                            <input type="number" name="Quantity" required class="form-control" placeholder="Enter Quantity">
                                         </div>
                                     </div>
                                 </div>
