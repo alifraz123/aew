@@ -17,8 +17,8 @@ class SavecitydataController extends Controller
  
      }
      public function show_companydata_method(Request $request){
-         $cities = DB::table('cities')->paginate(5);
-         $cities->appends($request->all());
+         $cities = DB::table('cities')->get();
+         
          return view('admin/modules/Cities/city',['cities'=>$cities]);
         
      }

@@ -1,9 +1,6 @@
 @extends('admin/layouts/mainlayout')
 @section('content')
 
-
-
-
 <div class="content-wrapper">
 
     <section class="content">
@@ -30,7 +27,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table class="table table-bordered table-striped">
+                    <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Party Code</th>
@@ -66,12 +63,7 @@
 
 
                     </table>
-                    {{$parties->links()}}
-                    <style>
-                        .w-5 {
-                            display: none;
-                        }
-                    </style>
+                   
                 </div>
 
                 <!-- /.card-body -->

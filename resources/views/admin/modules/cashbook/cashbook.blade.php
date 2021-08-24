@@ -77,7 +77,7 @@
                                                 <div class="form-group">
                                                     <label>Address</label>
 
-                                                    <textarea type="text" class="form-control" rows="5" name="Adress" placeholder="Adress" id="Adress">
+                                                    <textarea type="text" class="form-control" rows="5" name="Adress" id="Adress">
 
                                                 </textarea>
 
@@ -176,10 +176,11 @@
                         },
                         dataType: "json",
                         success: function(data) {
+                           
 
                             document.getElementById('PartyCode').value = data.PartyCode;
-                            document.getElementById('Adress').innerHTML = data.Adress;
-
+                            document.getElementById('Adress').value = data.Adress;
+                           
 
                         },
                         error: function(req, status, error) {
@@ -247,7 +248,7 @@
                                     Adress: document.getElementById('Adress').value,
                                     // invoice: document.getElementById('invoice').value,
                                     Cash: document.getElementById('Cash').value,
-                                    Balance: document.getElementById('Balance').value,
+                                    Balance: Balance-Cash,
                                     Remarks: document.getElementById('Remarks').value,
                                     _token: token
                                 },

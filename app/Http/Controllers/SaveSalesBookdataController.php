@@ -85,6 +85,10 @@ class SaveSalesBookdataController extends Controller
        return DB::table('items')->where('ItemName',$request->id)->get();
         
      }
+     public function getCityOfSelectedParty_method(Request $request){
+        return DB::table('parties')->where('PartyName',$request->id)->get()->first();
+         
+      }
      public function getSelectedProductData_total_method(Request $request){
       return DB::table('salebook_detail')->where('invoice',$request->id)->get();
        

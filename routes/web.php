@@ -143,6 +143,7 @@ Route::get('/salesbook', function () {
     }
 });
 Route::post('getSelectedProductData', [App\Http\Controllers\SaveSalesBookdataController::class, 'getSelectedProductData_method']);
+Route::post('getCityOfSelectedParty', [App\Http\Controllers\SaveSalesBookdataController::class, 'getCityOfSelectedParty_method']);
 
 Route::post('getBalanceOfCurrentParty', [App\Http\Controllers\SavePartydataController::class, 
 'getBalanceOfCurrentParty_method']);
@@ -200,6 +201,8 @@ Route::get('getCashBookForEdit', [App\Http\Controllers\SaveSalesBookdataControll
 Route::post('getPartyData', [App\Http\Controllers\Cashbook::class, 'getPartyData_method']);
 Route::post('sendCashbookData', [App\Http\Controllers\Cashbook::class, 'sendCashbookData_method']);
 Route::post('updateCashbookData', [App\Http\Controllers\Cashbook::class, 'updateCashbookData_method']);
+Route::post('getCompleteReport', [App\Http\Controllers\Cashbook::class, 'getCompleteReport_method']);
+Route::post('getOpeningBalance', [App\Http\Controllers\Cashbook::class, 'getOpeningBalance_method']);
 
 
 Route::get('Report', function () {
@@ -239,10 +242,7 @@ Route::post('getPartyLedger', function (Request $request) {
     return DB::table('salebook')->whereBetween('Date', [$request->startDate, $request->endDate])
         ->where('PartyName', $request->PartyName)->get();
 });
-Route::post('getCompleteReport', function (Request $request) {
 
-    return DB::table('salebook')->whereBetween('Date', [$request->startDate, $request->endDate])->get();
-});
 Route::post('getDebitOfCurrentParty', [App\Http\Controllers\SavePartydataController::class, 
 'getDebitOfCurrentParty_method']);
 

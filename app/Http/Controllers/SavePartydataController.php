@@ -34,7 +34,8 @@ class SavePartydataController extends Controller
 
         $data =  DB::insert("insert into salebook(Ref,invoice,Date,City,BuiltyNo,Sender,Reciever,Total
         ,Rent,FinalTotal,Balance,Debit,Username,PartyName,Remarks)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [
-            "sb", $invoice, $request->Date, $request->City, $request->BuiltyNo, $request->Sender, $request->Reciever, $request->Total, $request->Rent, $final_total, $request->Balance, $final_total, Auth::user()->name, $request->PartyName, $request->Remarks
+            "sb", $invoice, $request->Date, $request->City, $request->BuiltyNo, $request->Sender, $request->Reciever,
+             $request->Total, $request->Rent, $final_total, $request->Balance, $final_total, Auth::user()->name, $request->PartyName, $request->Remarks
         ]);
 
 
@@ -107,7 +108,8 @@ class SavePartydataController extends Controller
     }
     public function getDebitOfCurrentParty_method(Request $request)
     {
-        $debit = DB::table('salebook')->where('PartyName', $request->PartyName)->get('Debit');
+        $debit = DB::table('salebook')->where('PartyName', $request->PartyName)
+        ->whereBetween('Date',[$request->startDate,$request->endDate])->get('Debit');
         $aa = 0;
         for ($a = 0; $a < count($debit); $a++) {
             $aa = $aa + $debit[$a]->Debit;
@@ -117,10 +119,10 @@ class SavePartydataController extends Controller
     }
     public function getCreditOfCurrentParty_method(Request $request)
     {
-      
-        $bb = 0;
-        
-        $credit = DB::table('salebook')->where('PartyName', $request->PartyName)->get('Credit');
+       
+        $bb = 0;   
+        $credit = DB::table('salebook')->where('PartyName', $request->PartyName)
+        ->whereBetween('Date',[$request->startDate,$request->endDate])->get('Credit');
         for ($b = 0; $b < count($credit); $b++) {
             $bb = $bb + $credit[$b]->Credit;
         }
@@ -129,7 +131,7 @@ class SavePartydataController extends Controller
 
     public function getDebit_method(Request $request)
     {
-        $debit = DB::table('salebook')->get('Debit');
+        $debit = DB::table('salebook')->whereBetween('Date',[$request->startDate,$request->endDate])->get('Debit');
         $aa = 0;
         for ($a = 0; $a < count($debit); $a++) {
             $aa = $aa + $debit[$a]->Debit;
@@ -142,7 +144,7 @@ class SavePartydataController extends Controller
       
         $bb = 0;
         
-        $credit = DB::table('salebook')->get('Credit');
+        $credit = DB::table('salebook')->whereBetween('Date',[$request->startDate,$request->endDate])->get('Credit');
         for ($b = 0; $b < count($credit); $b++) {
             $bb = $bb + $credit[$b]->Credit;
         }
@@ -151,7 +153,7 @@ class SavePartydataController extends Controller
 
     public function show_companydata_method(Request $request)
     {
-         $parties = DB::table('parties')->paginate(5);
+         $parties = DB::table('parties')->get();
         //  $parties->appends($request->all());
          return view('admin/modules/Parties/company',['parties'=>$parties]);
     }

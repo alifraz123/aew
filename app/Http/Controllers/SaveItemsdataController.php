@@ -18,8 +18,8 @@ class SaveItemsdataController extends Controller
         
      }
      public function show_companydata_method(Request $request){
-         $items = DB::table('items')->paginate(5);
-        $items->appends($request->all());
+         $items = DB::table('items')->get();
+       
         return view('admin/modules/Items/item',['items'=>$items]);
         
      }

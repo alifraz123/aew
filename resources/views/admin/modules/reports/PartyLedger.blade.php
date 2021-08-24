@@ -32,7 +32,7 @@
                         <p><span>Address :</span> <span id="address"></span></p>
                     </div>
                     <div class="col-md-4">
-
+                        Cell : <span id="Cell"></span>
                     </div>
 
                 </div>
@@ -56,10 +56,6 @@
                     </tbody>
                 </table>
 
-               <div id="table_body2">
-
-               </div>
-
             </div>
         </div>
     </section>
@@ -76,7 +72,6 @@
     document.getElementById('toDate').innerHTML = endDate;
     document.getElementById('partyname').innerHTML = PartyName;
 
-
     var token = '{{csrf_token()}}';
     $.ajax({
         type: "post",
@@ -87,10 +82,11 @@
         },
         dataType: "json",
         success: function(data) {
-            console.log(data);
+            // console.log(data);
             document.getElementById('partycode').innerHTML = data[0].PartyCode;
             document.getElementById('city').innerHTML = data[0].City;
             document.getElementById('address').innerHTML = data[0].Adress;
+            document.getElementById('Cell').innerHTML = data[0].Cell;
 
         },
         error: function(req, status, error) {
@@ -98,10 +94,10 @@
         }
     });
 
-    var token = '{{csrf_token()}}';
+    var latest_balance = 0;
     $.ajax({
         type: "post",
-        url: "getPartyLedger",
+        url: "getOpeningBalance",
         data: {
             PartyName: PartyName,
             startDate: startDate,
@@ -110,12 +106,48 @@
         },
         dataType: "json",
         success: function(data) {
-            if (data) {
-                getDebitAndCredit();
+            // console.log(data);
+            var debit = data.debit;
+            var credit = data.credit;
+            var balance = debit - credit;
+            latest_balance = balance;
 
-                let output = '';
-                data.forEach(el => {
-                    output += `
+            $.ajax({
+                type: "post",
+                url: "getPartyLedger",
+                data: {
+                    PartyName: PartyName,
+                    startDate: startDate,
+                    endDate: endDate,
+                    _token: token
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data) {
+                        var total_debit = 0;
+                        var total_credit = 0;
+                        var total_balance = 0;
+                        var aa = 0;
+                        let output = '';
+                        output += `
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Your opening balance is</td>
+                                        <td id="ob">${latest_balance}</td>
+                                        </tr>
+                                    `;
+
+                        data.forEach(el => {
+                            total_debit = total_debit + parseInt(el.Debit);
+                            total_credit = total_credit + parseInt(el.Credit);
+                            aa = latest_balance + parseInt(el.Debit) - parseInt(el.Credit);
+                            latest_balance = aa;
+
+                            output += `
                                     <tr>
                                         <td>${el.Ref}</td>
                                         <td>${el.invoice}</td>
@@ -124,51 +156,40 @@
                                         <td>${el.Debit}</td>
                                         <td>${el.Credit}</td>
                                         <td>${el.Remarks}</td>
-                                        <td>${el.Balance}</td>
+                                        <td>${aa}</td>
                                         </tr>
 
                                     `;
 
-                });
+                        });
+                        output += `
+                <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        
+                                        <td style="font-weight:bold" id="Debit">${total_debit}</td>
+                                        <td style="font-weight:bold" id="Credit">${total_credit}</td>                                      
+                                        <td style="font-weight:bold">Your Balance Till Date(<span id="tillDate">${endDate}</span>) </td>
+                                        <td style="font-weight:bold" id="Balance">${latest_balance}</td>
+                                        </tr>
+                `;
+                        if (output) {
 
+                            document.getElementById('table_body').innerHTML = output;
 
-                if (output) {
-
-
-
-                    document.getElementById('table_body').innerHTML = output;
-
-                    // window.print();
-                } else {
-                    alert("Sorry not any data between these dates ");
+                        } else {
+                            alert("Sorry not any data between these dates ");
+                        }
+                    }
+                },
+                error: function(req, status, error) {
+                    console.log(error);
                 }
 
-                setTimeout(function() {
-                    var debit = document.getElementById('hidden_debit').value;
-                    var credit = document.getElementById('hidden_credit').value
-                    console.log(debit - credit);
-                    var output = `
-                                    <div style="text-align:right">
-                                       
-                                       
-                                      <span style="font-weight:bold"> Debit : ${debit}</span> 
-                                       <span style="font-weight:bold"> Credit :${credit}</span> 
-                                       
-                                        
-                                       <span style="font-weight:bold">Your Balance Till Date is :</span> 
-                                      <span style="font-weight:bold">${debit-credit}</span>  
-                                        
-                                        
-                                        </div>
-                                    `;
-                    document.getElementById('table_body2').innerHTML = output;
-                }, 1000);
+            });
 
 
-
-
-
-            }
 
 
 
@@ -178,45 +199,42 @@
         error: function(req, status, error) {
             console.log(error);
         }
-
     });
 
-    function getDebitAndCredit(){
+
+    getOpeningBalance();
+
+    function getOpeningBalance() {
+
         var token = '{{csrf_token()}}';
-                $.ajax({
-                    type: "post",
-                    url: "getDebitOfCurrentParty",
-                    data: {
-                        PartyName: PartyName,
-                        _token: token
-                    },
-                    dataType: "text",
-                    success: function(data) {
-                        document.getElementById('hidden_debit').value = data;
+        $.ajax({
+            type: "post",
+            url: "getOpeningBalance",
+            data: {
+                PartyName: PartyName,
+                startDate: startDate,
+                endDate: endDate,
+                _token: token
+            },
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+                var debit = data.debit;
+                var credit = data.credit;
+                var balance = debit - credit;
 
-                    },
-                    error: function(req, status, error) {
-                        console.log(error);
-                    }
-                });
-                $.ajax({
-                    type: "post",
-                    url: "getCreditOfCurrentParty",
-                    data: {
-                        PartyName: PartyName,
-                        _token: token
-                    },
-                    dataType: "text",
-                    success: function(data) {
-                        document.getElementById('hidden_credit').value = data;
+                document.getElementById('ob').innerHTML = balance;
 
-                    },
-                    error: function(req, status, error) {
-                        console.log(error);
-                    }
-                });
+
+            },
+            error: function(req, status, error) {
+                console.log(error);
+            }
+        });
+
     }
-    function printfun(){
+
+    function printfun() {
         window.print();
     }
 </script>

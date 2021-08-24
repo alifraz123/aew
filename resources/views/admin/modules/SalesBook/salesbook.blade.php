@@ -4,7 +4,7 @@
 <div class="content-wrapper">
 
     <section class="content">
-    <div id="show_insert_status">
+        <div id="show_insert_status">
 
         </div>
         <div style="margin-top: 1rem;" class="container-fluid">
@@ -13,7 +13,7 @@
                 <!-- left column -->
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-7">
+                        <div class="col-md-9">
 
                             <div class="card card-dark">
                                 <div class="card-header">
@@ -26,70 +26,75 @@
 
 
                                 </div>
+                                <div style="margin: 15px;line-height:0px" class="row">
+                                    <div style="width: 30%;">
+
+                                        <label>Party Name</label>
+                                        <select name="PartyName" class="control-form select2" style="width: 100%;" onchange="getBalance_on_partyname_change(this)" id="PartyName" required >
+                                            <option disabled selected value="">Choose value</option>
+                                            @foreach($parties as $partydata)
+                                            <option value="{{$partydata->PartyName}}"> {{$partydata->PartyName}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div style="width: 25%;">
+                                        <label>Date</label>
+                                        <input type="date" class="form-control" style="width: 100%;padding:0;height:30px" name="Date"  id="Date" required>
+                                    </div>
+                                   
+                                    <div style="width: 15%;">
+
+                                        <label>Balance</label>
+                                        <input type="text" style="width: 100%;height:30px" id="Balance" disabled name="Balance" required>
+
+                                    </div>
+                                </div>
+
                                 <!-- Add Product Detail -->
-                                <div style="padding: 12px;line-height: 0.5;" class="card-body">
-                                    @csrf
+                                <div style="line-height: 0;" class="card-body">
+
                                     <div class="row">
-                                        <div class="col-sm-4">
+                                        <div style="width: 30%;">
+                                            <label>Item Name</label>
+                                            <select onchange="getSelectedProductData(this.id)" style="width: 100%;" required name="ItemName[]" id="ItemName" class="select2">
+                                                <option disabled selected value="">Choose value</option>
+                                                @foreach($items as $item)
+                                                <option value="{{$item->ItemName}}"> {{$item->ItemName}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div style="width: 10%;">
+
+                                            <label>Rate</label>
+                                            <input style="width: 100%;" type="number" name="Rate[]" id="Rate" required class="">
+
+                                        </div>
+                                        <div style="width: 10%;">
+
+                                            <label>Quantity</label>
+                                            <input style="width: 100%;" type="number" oninput="countTotalWithQuantity()" name="Quantity[]" id="Quantity" required>
+
+                                        </div>
+                                        <div style="width: 20%;">
                                             <!-- text input -->
                                             <div class="form-group">
-                                                <label>Enter Item Name</label>
-                                                <select onchange="getSelectedProductData(this.id)" required name="ItemName[]" id="ItemName" class="form-control select2 select2bs4">
-                                                    <option disabled selected value="">Choose value</option>
-                                                    @foreach($items as $item)
-
-                                                    <option value="{{$item->ItemName}}"> {{$item->ItemName}}</option>
-                                                    @endforeach
-
-                                                </select>
-
+                                                <label>Category</label>
+                                                <input style="width: 100%;" type="text" name="Category[]" id="Category" required>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div style="width: 10%;">
                                             <div class="form-group">
-                                                <label>Enter Rate</label>
-                                                <input type="number" name="Rate[]" id="Rate" required class="form-control" placeholder="Enter Rate">
+                                                <label>P. Total</label>
+                                                <input style="width:100%;" type="number" name="productTotal[]" id="productTotal" required>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label>Enter Quantity</label>
-                                                <input type="number" oninput="countTotalWithQuantity()" name="Quantity[]" id="Quantity" required class="form-control" placeholder="Enter Quantity">
-                                            </div>
-                                        </div>
+                                        <button style="width: 10%;height: 26px;margin-top: 8px;" class="addRow">ADD +</button>
+
                                     </div>
-                                    <div class="row bb">
-                                        <div class="col-sm-4">
-                                            <!-- text input -->
-                                            <div class="form-group">
-                                                <label>Enter Category</label>
-                                                <input type="text" name="Category[]" id="Category" required class="form-control" placeholder="Enter Category">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label>Product Total</label>
-                                                <input type="number" name="productTotal[]" id="productTotal" required class="form-control" placeholder="Product Total">
-                                            </div>
-                                        </div>
 
-                                        <div style="padding-top: 16px;" class="col-sm-4">
+                                    <table style="margin-left: -10px;">
 
-                                            <button style="width: 100%;" class="btn btn-primary addRow">+</button>
-                                        </div>
-                                       
-                                    </div>
-                                    <table class="table">
-                                        <thead id="hide_by_default">
-                                            <tr>
-                                                <td>ItemName</td>
-                                                <td>Rate</td>
-                                                <td>Category</td>
-                                                <td>Quantity</td>
-                                                <td>P Total</td>
-                                                <td>Action</td>
-                                            </tr>
-                                        </thead>
                                         <tbody id="whereProductsShow">
                                         </tbody>
                                     </table>
@@ -105,23 +110,25 @@
                                     var Quantity = document.getElementById('Quantity').value;
                                     var productTotal = document.getElementById('productTotal').value;
                                     // alert(aa);
-                                    
-                                    
-                                       
-                                        var tr =
-                                            "<tr>" +
-                                            "<td><input type='text' class='form-control' name='ItemName[]' value='" + ItemName + "'></td>" +
-                                            "<td><input type='number' name='Rate[]' class='form-control' value='" + Rate + "' ></td>" +
-                                            "<td><input type='text' name='Category[]'  value='" + Category + "' required class='form-control' ></td>" +
-                                            "<td><input type='number' oninput='changeInvoice_oninput()' name='Quantity[]' value='" + Quantity + "' required class='form-control' >" +
-                                            "<td><input type='number' name='productTotal[]' value='" + productTotal + "' required class='form-control' >" +
-                                            "<th> <a class='btn btn-danger deleteRow'>delete</a> </th>" +
-                                            "</tr>";
-                                           
-                                        $('tbody').append(tr);
-                                       
 
-                                    
+
+
+                                    var tr =
+                                        `<tr>
+                                        <td><input style="width:230px" type='text' class='' name='ItemName[]' value='${ItemName} '></td>
+                                        <td><input style="width:70px" type='number' name='Rate[]' class='' value='${Rate}' ></td>
+                                        <td><input style="width:70px" type='number' oninput='changeInvoice_oninput()' name='Quantity[]' value='${Quantity}' required >
+                                        <td><input style="width:160px" type='text' name='Category[]'  value='${Category}' required class='' ></td>
+                                        <td><input style="width:70px" type='number' name='productTotal[]' value='${productTotal}' required class='' >
+                                       
+                                                                              
+                                        <td> <button style="padding:11px" class='deleteRow'>delete</button> </td>
+                                        </tr>`;
+
+                                    $('tbody').append(tr);
+
+
+
                                     $(".deleteRow").click(function() {
                                         $(this).parent().parent().remove();
                                         addTotal();
@@ -135,382 +142,367 @@
                                 });
                             </script>
 
-
-
-
-
-
-
-
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <div class="card card-dark">
                                 <div class="card-header">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <h3 class="card-title">Sales Book Data</h3>
                                         </div>
                                     </div>
                                 </div>
-                               
-                                    <div style="line-height: 00.5;
-    padding-top: 10.2px;" class="card-body">
-                                        <div class="row">
 
-                                            <input type="hidden" id="invoice" name="invoice" value="{{$productSaleId}}">
+                                <div style="line-height: 0;padding-top: 10px;" class="card-body">
+                                    <div class="row">
 
-
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Enter Date</label>
-                                                    <input type="text" name="Date" disabled id="Date" required class="form-control" placeholder="Enter Date">
-                                                </div>
-                                            </div>
-                                            <script>
-                                                let currentDate = new Date();
-                                                let cDay = currentDate.getDate();
-                                                let cMonth = currentDate.getMonth() + 1;
-                                                if (cMonth >= 1 || cMonth <= 9) {
-                                                    cMonth = "0" + cMonth;
-                                                    // alert(cMonth);
-
-                                                } else {
-                                                    cMonth = cMonth;
-                                                    // alert(cMonth);
-
-                                                }
-                                                let cYear = currentDate.getFullYear();
-                                                document.getElementById('Date').value = cYear + "-" + cMonth + "-" + cDay;
-                                            </script>
-                                            <div class="col-sm-6">
-                                                <!-- text input -->
-                                                <div class="form-group">
-                                                    <label>Enter City</label>
-                                                    <select name="City" id="City" required class="form-control select2 select2bs4">
-                                                        <option disabled selected value="">Choose value...</option>
-                                                        @foreach($data as $partydata)
-
-                                                        <option value="{{$partydata->CityName}}"> {{$partydata->CityName}}</option>
-                                                        @endforeach
-
-                                                    </select>
+                                        <input type="hidden" id="invoice" name="invoice" value="{{$productSaleId}}">
 
 
 
-                                                </div>
-                                            </div>
+                                        <div style="width: 100%;" class="form-group">
+                                            <label>City</label>
+                                            <!-- <select style="width: 100%;" name="City" id="City" required class=" select2 ">
+                                                <option disabled selected value="">Choose value...</option>
+                                                @foreach($data as $partydata)
+
+                                                <option value="{{$partydata->CityName}}"> {{$partydata->CityName}}</option>
+                                                @endforeach
+
+                                            </select> -->
+                                            <input type="text" disabled style="width: 100%;" name="City" id="City">
+
                                         </div>
+
                                         <div class="row">
-                                            <div class="col-sm-6">
+
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Sender Name</label>
+                                                    <input style="width: 100%;" type="text" id="Sender" name="Sender" required class="" placeholder="Sender Name">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
                                                 <!-- text input -->
                                                 <div class="form-group">
-                                                    <label>Enter Party Name</label>
-                                                    <select name="PartyName" onchange="getBalance_on_partyname_change(this)" id="PartyName" required class="form-control select2 select2bs4" placeholder="Enter Party Name">
-                                                        <option disabled selected value="">Choose value</option>
-                                                        @foreach($parties as $partydata)
-                                                        <option value="{{$partydata->PartyName}}"> {{$partydata->PartyName}}</option>
-                                                        @endforeach
-
-                                                    </select>
-
-                                                </div>
-
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Enter Sender Name</label>
-                                                    <input type="text" id="Sender" name="Sender" required class="form-control" placeholder="Enter Sender Name">
+                                                    <label>Reciever Name</label>
+                                                    <input type="text" style="width: 100%;" id="Reciever" name="Reciever" required class="" placeholder="Reciever Name">
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <!-- text input -->
-                                                <div class="form-group">
-                                                    <label>Enter Reciever Name</label>
-                                                    <input type="text" id="Reciever" name="Reciever" required class="form-control" placeholder="Enter Reciever Name">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Total Bill</label>
-                                                    <input type="text" disabled name="Total" id="Total" required class="form-control" placeholder="Enter Total Bill">
+                                                    <input type="text" style="width: 100%;" disabled name="Total" id="Total" required class="" placeholder="Total Bill">
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-md-12">
                                                 <!-- text input -->
                                                 <div class="form-group">
-                                                    <label>Enter Rent</label>
-                                                    <input type="number" oninput="add_total_and_rent()" name="Rent" id="Rent" required class="form-control" placeholder="Enter Rent">
+                                                    <label>Rent</label>
+                                                    <input type="number" style="width: 100%;" oninput="add_total_and_rent()" name="Rent" id="Rent" required class="" placeholder="Rent">
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Final Total</label>
-                                                    <input type="text" disabled name="FinalTotal" id="FinalTotal" required class="form-control" placeholder="Enter Final Total">
+                                                    <input type="text" style="width: 100%;" disabled name="FinalTotal" id="FinalTotal" required class="" placeholder="Final Total">
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <!-- text input -->
+                                            <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label>Balance</label>
-                                                    <input type="text" id="Balance" disabled name="Balance" required class="form-control">
+                                                    <label>Builty No.</label>
+                                                    <input type="text" style="width: 100%;" id="BuiltyNo" name="BuiltyNo" required class="" placeholder="Builty No.">
                                                 </div>
+
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label>Enter Builty No.</label>
-                                                    <input type="text" id="BuiltyNo" name="BuiltyNo" required class="form-control" placeholder="Enter Builty No.">
-                                                </div>
+                                                    <label>Remarks</label>
+                                                    <textarea name="Remarks"  id="Remarks" style="width: 100%;line-height:initial" rows="3" required>
 
-                                            </div>
-                                        </div>
-                                        <div class="row">
-
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label>Enter Remarks</label>
-                                                    <textarea name="Remarks" id="Remarks" style="width: 100%;" rows="3" required class="form-control" placeholder="Enter Remarks">
-
-                                            </textarea>
+                                                    </textarea>
 
                                                 </div>
                                             </div>
-                                            <button onclick="sendMultipleData()" class="form-control btn btn-primary">Send Data</button>
-                                        </div>
+                                            <div class="col-md-12">
+                                                <button style="padding: 7px;" onclick="sendMultipleData()" class="btn btn-primary">Send Data</button>
 
+                                            </div>
+
+                                        </div>
                                     </div>
-
-                               
+                                </div>
                             </div>
-
                         </div>
+
+
                     </div>
+
                 </div>
-
             </div>
+        </div>
 
-            <script>
-                function getSelectedProductData(partyName) {
-                    var id = document.getElementById(partyName).value;
-                    var token = '{{csrf_token()}}';
-                    $.ajax({
-                        type: "post",
-                        url: "getSelectedProductData",
-                        data: {
-                            id: id,
-                            _token: token
-                        },
-                        dataType: "json",
-                        success: function(data) {
-                            console.log(data);
-                            document.getElementById('Rate').value = data[0].Rate;
-                            document.getElementById('Category').value = data[0].Category;
-                            document.getElementById('Quantity').value = data[0].Quantity;
-                            document.getElementById('productTotal').value = data[0].Rate * data[0].Quantity;
-                        },
-                        error: function(req, status, error) {
-                            console.log(error);
-                        }
-                    });
-                }
+</div>
 
-                function getBalance_on_partyname_change() {
-                    var token = '{{csrf_token()}}';
-                    $.ajax({
-                        type: "post",
-                        url: "getBalanceOfCurrentParty",
-                        data: {
-                            PartyName: document.getElementById('PartyName').value,
-                            _token: token
-                        },
-                        dataType: "text",
-                        success: function(data) {
+<script>
+    setDate();
+    function setDate(){
+        let currentDate = new Date();
+                                        let cDay = currentDate.getDate();
+                                        let cMonth = currentDate.getMonth() + 1;
+                                        if (cMonth >= 1 || cMonth <= 9) {
+                                            cMonth = "0" + cMonth;
+                                            // alert(cMonth);
 
-                            console.log(data);
-                            document.getElementById('Balance').value = data;
+                                        } else {
+                                            cMonth = cMonth;
+                                            // alert(cMonth);
 
-                        },
-                        error: function(req, status, error) {
-                            console.log(error);
-                        }
-                    });
-                }
+                                        }
+                                        let cYear = currentDate.getFullYear();
+                                        document.getElementById('Date').value = cYear + "-" + cMonth + "-" + cDay;
+    }
+    
+    function getSelectedProductData(partyName) {
+       
+        var PartyName = document.getElementById(partyName).value;
+        var token = '{{csrf_token()}}';
+        $.ajax({
+            type: "post",
+            url: "getSelectedProductData",
+            data: {
+                id: PartyName,
+                _token: token
+            },
+            dataType: "json",
+            success: function(data) {
+                console.log(data);
+                document.getElementById('Rate').value = data[0].Rate;
+                document.getElementById('Category').value = data[0].Category;
+                document.getElementById('Quantity').value = data[0].Quantity;
+                document.getElementById('productTotal').value = data[0].Rate * data[0].Quantity;
+            },
+            error: function(req, status, error) {
+                console.log(error);
+            }
+        });
 
-                function countTotalWithQuantity() {
-                    var rate = document.getElementById('Rate').value;
-                    var quantity = document.getElementById('Quantity').value;
-                    var productTotal = rate * quantity;
-                    document.getElementById('productTotal').value = productTotal;
-                }
-
-                function addTotal() {
-                    var grandTotal = 0;
-                    var productTotal = document.getElementsByName('productTotal[]');
-                    for (var i = 1; i < productTotal.length; i++) {
-                        var productTotal1 = productTotal[i].value;
-                        grandTotal = grandTotal + parseInt(productTotal1);
-                    }
-                    document.getElementById('Total').value = grandTotal;
-                    // alert(grandTotal);
-                }
-
-                function add_total_and_rent() {
-                    var total = document.getElementById('Total').value;
-                    var rent = document.getElementById('Rent').value;
-                    var totalbill = parseInt(total) + parseInt(rent);
-                    document.getElementById('FinalTotal').value = totalbill;
-                }
-
-                function changeInvoice_oninput() {
-                    var ItemName = document.getElementsByName('ItemName[]');
-                    var Rate = document.getElementsByName('Rate[]');
-                    var Category = document.getElementsByName('Category[]');
-                    var Quantity = document.getElementsByName('Quantity[]');
-                    var productTotal = document.getElementsByName('productTotal[]');
+       
 
 
 
-                    for (var i = 1; i < Rate.length; i++) {
+    }
 
-                        var ItemName1 = ItemName[i].value;
+    function getBalance_on_partyname_change() {
+        var token = '{{csrf_token()}}';
+        $.ajax({
+            type: "post",
+            url: "getBalanceOfCurrentParty",
+            data: {
+                PartyName: document.getElementById('PartyName').value,
+                _token: token
+            },
+            dataType: "text",
+            success: function(data) {
 
-                        var Rate1 = Rate[i].value;
+                console.log(data);
+                document.getElementById('Balance').value = data;
 
-                        var Category1 = Category[i].value;
-                        var Quantity1 = Quantity[i].value;
+            },
+            error: function(req, status, error) {
+                console.log(error);
+            }
+        });
+        var PartyName = document.getElementById('PartyName').value;
+        $.ajax({
+            type: "post",
+            url: "getCityOfSelectedParty",
+            data: {
+                id: PartyName,
+                _token: token
+            },
+            dataType: "json",
+            success: function(data) {
+               
+                document.getElementById('City').value = data.City;
+            },
+            error: function(req, status, error) {
+                console.log(error);
+            }
+        });
+    }
 
-                        var productTotal1;
-                        productTotal[i].value = Rate1 * Quantity1;
+    function countTotalWithQuantity() {
+        var rate = document.getElementById('Rate').value;
+        var quantity = document.getElementById('Quantity').value;
+        var productTotal = rate * quantity;
+        document.getElementById('productTotal').value = productTotal;
+    }
+
+    function addTotal() {
+        var grandTotal = 0;
+        var productTotal = document.getElementsByName('productTotal[]');
+        for (var i = 1; i < productTotal.length; i++) {
+            var productTotal1 = productTotal[i].value;
+            grandTotal = grandTotal + parseInt(productTotal1);
+        }
+        document.getElementById('Total').value = grandTotal;
+        // alert(grandTotal);
+    }
+
+    function add_total_and_rent() {
+        var total = document.getElementById('Total').value;
+        var rent = document.getElementById('Rent').value;
+        var totalbill = parseInt(total) + parseInt(rent);
+        document.getElementById('FinalTotal').value = totalbill;
+    }
+
+    function changeInvoice_oninput() {
+        var ItemName = document.getElementsByName('ItemName[]');
+        var Rate = document.getElementsByName('Rate[]');
+        var Category = document.getElementsByName('Category[]');
+        var Quantity = document.getElementsByName('Quantity[]');
+        var productTotal = document.getElementsByName('productTotal[]');
 
 
-                        // alert(ItemName1+" "+Rate1+" "+Category1+" "+Quantity1+" "+productTotal1);
+
+        for (var i = 1; i < Rate.length; i++) {
+
+            var ItemName1 = ItemName[i].value;
+
+            var Rate1 = Rate[i].value;
+
+            var Category1 = Category[i].value;
+            var Quantity1 = Quantity[i].value;
+
+            var productTotal1;
+            productTotal[i].value = Rate1 * Quantity1;
 
 
-                    }
-                }
+            // alert(ItemName1+" "+Rate1+" "+Category1+" "+Quantity1+" "+productTotal1);
 
-                function sendMultipleData() {
 
-                    var ItemName = document.getElementsByName('ItemName[]');
-                    var Rate = document.getElementsByName('Rate[]');
-                    var Category = document.getElementsByName('Category[]');
-                    var Quantity = document.getElementsByName('Quantity[]');
-                    var productTotal = document.getElementsByName('productTotal[]');
-                    var obj;
-                    obj = [];
+        }
+    }
 
-                    for (var i = 1; i < Rate.length; i++) {
-                        var ItemName1 = ItemName[i].value;
-                        var Rate1 = Rate[i].value;
-                        var Category1 = Category[i].value;
-                        var Quantity1 = Quantity[i].value;
-                        var productTotal1 = productTotal[i].value;
-                        //    console.log(ItemName1+"-"+Rate1+"-"+Category1+"-"+Quantity1+"-"+productTotal1);
-                        var obje;
-                        obje = {
-                            ItemName: "",
-                            Rate: "",
-                            Category: "",
-                            Quantity: "",
-                            Total: ""
-                        };
-                        obje.ItemName = ItemName1;
-                        obje.Rate = Rate1;
-                        obje.Category = Category1;
-                        obje.Quantity = Quantity1;
-                        obje.Total = productTotal1
-                        obj.push(obje);
+    function sendMultipleData() {
 
-                    }
-                    // console.log(obj);
-                    var partyname = document.getElementById('PartyName').value;
-                    var City = document.getElementById('City').value;
-                    var Sender = document.getElementById('Sender').value;
-                    var Reciever = document.getElementById('Reciever').value;
-                    var Rent = document.getElementById('Rent').value;
-                    var BuiltyNo = document.getElementById('BuiltyNo').value;
-                    var Remarks = document.getElementById('Remarks').value;
-                    
-                    if (partyname != '' && City != '' && Remarks != '' && Sender != '' && Reciever != '' && Rent != '' && BuiltyNo != '') {
+        var ItemName = document.getElementsByName('ItemName[]');
+        var Rate = document.getElementsByName('Rate[]');
+        var Category = document.getElementsByName('Category[]');
+        var Quantity = document.getElementsByName('Quantity[]');
+        var productTotal = document.getElementsByName('productTotal[]');
+        var obj;
+        obj = [];
 
-                        var token = '{{csrf_token()}}';
-                        $.ajax({
-                            type: "post",
-                            url: "sendMultipleData",
-                            data: {
+        for (var i = 1; i < Rate.length; i++) {
+            var ItemName1 = ItemName[i].value;
+            var Rate1 = Rate[i].value;
+            var Category1 = Category[i].value;
+            var Quantity1 = Quantity[i].value;
+            var productTotal1 = productTotal[i].value;
+            //    console.log(ItemName1+"-"+Rate1+"-"+Category1+"-"+Quantity1+"-"+productTotal1);
+            var obje;
+            obje = {
+                ItemName: "",
+                Rate: "",
+                Category: "",
+                Quantity: "",
+                Total: ""
+            };
+            obje.ItemName = ItemName1;
+            obje.Rate = Rate1;
+            obje.Category = Category1;
+            obje.Quantity = Quantity1;
+            obje.Total = productTotal1
+            obj.push(obje);
 
-                                obj: obj,
-                                Date: document.getElementById('Date').value,
-                                City: document.getElementById('City').value,
-                                BuiltyNo: document.getElementById('BuiltyNo').value,
-                                Sender: document.getElementById('Sender').value,
-                                Reciever: document.getElementById('Reciever').value,
-                                Total: document.getElementById('Total').value,
-                                Rent: document.getElementById('Rent').value,
-                                FinalTotal: document.getElementById('FinalTotal').value,
-                                Balance: document.getElementById('Balance').value,
-                                PartyName: document.getElementById('PartyName').value,
-                                Remarks: document.getElementById('Remarks').value,
-                                _token: token
-                            },
-                            dataType: "text",
-                            success: function(data) {
-                                console.log(data);
-                                var output =`
+        }
+        // console.log(obj);
+        var partyname = document.getElementById('PartyName').value;
+        var City = document.getElementById('City').value;
+        var Sender = document.getElementById('Sender').value;
+        var Reciever = document.getElementById('Reciever').value;
+        var Rent = document.getElementById('Rent').value;
+        var BuiltyNo = document.getElementById('BuiltyNo').value;
+        var Remarks = document.getElementById('Remarks').value;
+
+        if (partyname != '' && City != '' && Remarks != '' && Sender != '' && Reciever != '' && Rent != '' && BuiltyNo != '') {
+
+            var token = '{{csrf_token()}}';
+            $.ajax({
+                type: "post",
+                url: "sendMultipleData",
+                data: {
+
+                    obj: obj,
+                    Date: document.getElementById('Date').value,
+                    City: document.getElementById('City').value,
+                    BuiltyNo: document.getElementById('BuiltyNo').value,
+                    Sender: document.getElementById('Sender').value,
+                    Reciever: document.getElementById('Reciever').value,
+                    Total: document.getElementById('Total').value,
+                    Rent: document.getElementById('Rent').value,
+                    FinalTotal: document.getElementById('FinalTotal').value,
+                    Balance: document.getElementById('Balance').value,
+                    PartyName: document.getElementById('PartyName').value,
+                    Remarks: document.getElementById('Remarks').value,
+                    _token: token
+                },
+                dataType: "text",
+                success: function(data) {
+                    setDate();
+                    // console.log(data);
+                    var output = `
                                 <div class="alert alert-success">
             <button class="close" style="font-size: 30px;" data-dismiss="alert">&times</button>
             Inserted Successfuly
         </div>    
                                 `;
-                                document.getElementById('show_insert_status').innerHTML = output;
+                    document.getElementById('show_insert_status').innerHTML = output;
 
 
-                            },
-                            error: function(req, status, error) {
-                                console.log(error);
-                                var output =`
+                },
+                error: function(req, status, error) {
+                    console.log(error);
+                    var output = `
                                 <div class="alert alert-danger">
             <button class="close" style="font-size: 30px;" data-dismiss="alert">&times</button>
             Not Inserted
         </div>
                                 `;
-                                document.getElementById('show_insert_status').innerHTML = output;
-                            }
-                        });
-                        $("#whereProductsShow tr").remove(); 
-                        document.getElementById('Date').value = '';
-                        // document.getElementById('City').value = '';
-                        $("#City").val('').trigger('change');
-                        // document.getElementById('PartyName').value = '';
-                        $("#PartyName").val('').trigger('change');
-                        document.getElementById('Sender').value = '';
-                        document.getElementById('Reciever').value = '';
-                        document.getElementById('Total').value = '';
-                        document.getElementById('Rent').value = '';
-                        document.getElementById('FinalTotal').value = '';
-                        document.getElementById('Balance').value = '';
-                        document.getElementById('BuiltyNo').value = '';
-                        document.getElementById('Remarks').value = '';
-                        let currentDate = new Date();
-                        let cDay = currentDate.getDate();
-                        let cMonth = currentDate.getMonth() + 1;
-                        let cYear = currentDate.getFullYear();
-                        document.getElementById('Date').value = cYear + "-" + cMonth + "-" + cDay;
-                        // window.location.reload();
-
-                    }
-
-
-
+                    document.getElementById('show_insert_status').innerHTML = output;
                 }
-            </script>
+            });
+            $("#whereProductsShow tr").remove();
+            document.getElementById('Date').value = '';
+            // document.getElementById('City').value = '';
+            $("#City").val('').trigger('change');
+            // document.getElementById('PartyName').value = '';
+            $("#PartyName").val('').trigger('change');
+            document.getElementById('Sender').value = '';
+            document.getElementById('Reciever').value = '';
+            document.getElementById('Total').value = '';
+            document.getElementById('Rent').value = '';
+            document.getElementById('FinalTotal').value = '';
+            document.getElementById('Balance').value = '';
+            document.getElementById('BuiltyNo').value = '';
+            document.getElementById('Remarks').value = '';
+            let currentDate = new Date();
+            let cDay = currentDate.getDate();
+            let cMonth = currentDate.getMonth() + 1;
+            let cYear = currentDate.getFullYear();
+            document.getElementById('Date').value = cYear + "-" + cMonth + "-" + cDay;
+            // window.location.reload();
+
+        }
 
 
 
-            @endsection
+    }
+</script>
+
+
+
+@endsection

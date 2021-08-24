@@ -21,24 +21,16 @@
 
                 </div>
                 <hr>
-
-              
-
                 <table id="table" class="table table-bordered">
                     <thead>
                         <tr>
-                            <th scope="col">Ref</th>
+
                             <th scope="col">PartyName</th>
-                            <th scope="col">Invoice</th>
-                            <th scope="col">Date</th>
                             <th scope="col">Rent</th>
                             <th scope="col">Total</th>
+
                             <th scope="col">Net Sale</th>
                             <th scope="col">Cash</th>
-                            <th scope="col">Sender</th>
-                            <th scope="col">Reciever</th>
-                            <th scope="col">BuiltyNo</th>
-                            <th scope="col">Remarks</th>
                             <th scope="col">Balance</th>
 
                         </tr>
@@ -48,9 +40,7 @@
                     </tbody>
                 </table>
 
-               <div id="table_body2">
 
-               </div>
 
             </div>
         </div>
@@ -64,7 +54,8 @@
     var PartyName = url.searchParams.get('PartyName');
     var startDate = url.searchParams.get('startDate');
     var endDate = url.searchParams.get('endDate');
-    
+    document.getElementById('fromDate').innerHTML = startDate;
+    document.getElementById('toDate').innerHTML = endDate;
 
     var token = '{{csrf_token()}}';
     $.ajax({
@@ -77,76 +68,56 @@
         },
         dataType: "json",
         success: function(data) {
+            // console.log(data);
             if (data) {
-                getDebitAndCredit();
+                var debit = 0;
+                var credit = 0;
+                var balance = 0;
+                var total = 0;
+                var rent = 0;
 
                 let output = '';
                 data.forEach(el => {
-                    var sum = parseInt(el.Rent)+parseInt(el.Total) ;
+                    debit = debit + el.debit;
+                    credit = credit + el.credit;
+                    balance = balance + el.balance;
+                    rent = rent + el.rent;
+                    total = total + el.total;
+
                     output += `
                                     <tr>
-                                        <td>${el.Ref}</td>
                                         <td>${el.PartyName}</td>
-                                        <td>${el.invoice}</td>
-                                        <td>${el.Date}</td>
-                                        <td>${el.Rent}</td>
-                                        <td>${el.Total}</td>
-                                        <td>${sum}</td>
-                                        <td>${el.Cash}</td>
-                                        <td>${el.Sender}</td>
-                                        <td>${el.Reciever}</td>
-                                        <td>${el.BuiltyNo}</td>
-                                        <td>${el.Remarks}</td>
-                                        <td>${el.Balance}</td>
+                                        <td>${el.rent}</td>
+                                        <td>${el.total}</td>
+                                        <td>${el.debit}</td>                                     
+                                        <td>${el.credit}</td>
+                                        <td>${el.balance}</td>
                                         </tr>
 
                                     `;
-
                 });
-
-
+                output += `
+                <tr>
+                                        
+                                        
+                                        <td></td>
+                                        <td>${rent}</td>
+                                        <td>${total}</td>
+                                        <td style="font-weight:bold" >${debit}</td>
+                                        <td style="font-weight:bold" >${credit}</td>                                      
+                                        
+                                        <td style="font-weight:bold" id="Balance">${balance}</td>
+                                        </tr>
+                `;
                 if (output) {
-
-
-
                     document.getElementById('table_body').innerHTML = output;
-
-                    // window.print();
                 } else {
                     alert("Sorry not any data between these dates ");
                 }
 
-                setTimeout(function() {
-                    var debit = document.getElementById('hidden_debit').value;
-                    var credit = document.getElementById('hidden_credit').value
-                    console.log(debit - credit);
-                    var output = `
-                                    <div style="text-align:right">
-                                       
-                                       
-                                      <span style="font-weight:bold"> Debit : ${debit}</span> 
-                                       <span style="font-weight:bold"> Credit :${credit}</span> 
-                                       
-                                        
-                                       <span style="font-weight:bold">Your Balance Till Date is :</span> 
-                                      <span style="font-weight:bold">${debit-credit}</span>  
-                                        
-                                        
-                                        </div>
-                                    `;
-                    document.getElementById('table_body2').innerHTML = output;
-                }, 1000);
-
-
-
-
-
+            } else {
+                alert("Not any sale between this sale");
             }
-
-
-
-
-
         },
         error: function(req, status, error) {
             console.log(error);
@@ -154,40 +125,7 @@
 
     });
 
-    function getDebitAndCredit(){
-        var token = '{{csrf_token()}}';
-                $.ajax({
-                    type: "post",
-                    url: "getDebit",
-                    data: {
-                        _token: token
-                    },
-                    dataType: "text",
-                    success: function(data) {
-                        document.getElementById('hidden_debit').value = data;
-
-                    },
-                    error: function(req, status, error) {
-                        console.log(error);
-                    }
-                });
-                $.ajax({
-                    type: "post",
-                    url: "getCredit",
-                    data: {
-                        _token: token
-                    },
-                    dataType: "text",
-                    success: function(data) {
-                        document.getElementById('hidden_credit').value = data;
-
-                    },
-                    error: function(req, status, error) {
-                        console.log(error);
-                    }
-                });
-    }
-    function printfun(){
+    function printfun() {
         window.print();
     }
 </script>

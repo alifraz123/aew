@@ -26,7 +26,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table  class="table table-bordered table-striped">
+                    <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Item Name</th>
@@ -52,12 +52,7 @@
                         </tbody>
                        
                     </table>
-                    {{$items->links()}}
-                    <style>
-                        .w-5 {
-                            display: none;
-                        }
-                    </style>
+                   
                 </div>
                 <!-- /.card-body -->
             </div>
