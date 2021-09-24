@@ -192,7 +192,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>City</label>
-                                                <select name="City" disabled style="width: 100%;" id="City" required class="select2">
+                                                <select name="City"  style="width: 100%;" id="City" required class="select2">
                                                     <option selected value="{{$salebook->City}}">{{$salebook->City}}</option>
                                                     @foreach($cities as $partydata)
 

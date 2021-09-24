@@ -30,7 +30,7 @@
                                     <div style="width: 30%;">
 
                                         <label>Party Name</label>
-                                        <select name="PartyName" class="control-form select2" style="width: 100%;" onchange="getBalance_on_partyname_change(this)" id="PartyName" required >
+                                        <select name="PartyName" class="control-form select2" style="width: 100%;" onchange="getBalance_on_partyname_change(this)" id="PartyName" required>
                                             <option disabled selected value="">Choose value</option>
                                             @foreach($parties as $partydata)
                                             <option value="{{$partydata->PartyName}}"> {{$partydata->PartyName}}</option>
@@ -40,9 +40,9 @@
 
                                     <div style="width: 25%;">
                                         <label>Date</label>
-                                        <input type="date" class="form-control" style="width: 100%;padding:0;height:30px" name="Date"  id="Date" required>
+                                        <input type="date" class="form-control" style="width: 100%;padding:0;height:30px" name="Date" id="Date" required>
                                     </div>
-                                   
+
                                     <div style="width: 15%;">
 
                                         <label>Balance</label>
@@ -219,7 +219,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Remarks</label>
-                                                    <textarea name="Remarks"  id="Remarks" style="width: 100%;line-height:initial" rows="3" required>
+                                                    <textarea name="Remarks" id="Remarks" style="width: 100%;line-height:initial" rows="3" required>
 
                                                     </textarea>
 
@@ -247,25 +247,26 @@
 
 <script>
     setDate();
-    function setDate(){
+
+    function setDate() {
         let currentDate = new Date();
-                                        let cDay = currentDate.getDate();
-                                        let cMonth = currentDate.getMonth() + 1;
-                                        if (cMonth >= 1 || cMonth <= 9) {
-                                            cMonth = "0" + cMonth;
-                                            // alert(cMonth);
+        let cDay = currentDate.getDate();
+        let cMonth = currentDate.getMonth() + 1;
+        if (cMonth >= 1 || cMonth <= 9) {
+            cMonth = "0" + cMonth;
+            // alert(cMonth);
 
-                                        } else {
-                                            cMonth = cMonth;
-                                            // alert(cMonth);
+        } else {
+            cMonth = cMonth;
+            // alert(cMonth);
 
-                                        }
-                                        let cYear = currentDate.getFullYear();
-                                        document.getElementById('Date').value = cYear + "-" + cMonth + "-" + cDay;
+        }
+        let cYear = currentDate.getFullYear();
+        document.getElementById('Date').value = cYear + "-" + cMonth + "-" + cDay;
     }
-    
+
     function getSelectedProductData(partyName) {
-       
+
         var PartyName = document.getElementById(partyName).value;
         var token = '{{csrf_token()}}';
         $.ajax({
@@ -288,7 +289,7 @@
             }
         });
 
-       
+
 
 
 
@@ -324,7 +325,7 @@
             },
             dataType: "json",
             success: function(data) {
-               
+
                 document.getElementById('City').value = data.City;
             },
             error: function(req, status, error) {
