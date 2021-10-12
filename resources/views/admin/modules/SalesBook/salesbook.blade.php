@@ -380,11 +380,9 @@
             var productTotal1;
             productTotal[i].value = Rate1 * Quantity1;
 
-
             // alert(ItemName1+" "+Rate1+" "+Category1+" "+Quantity1+" "+productTotal1);
-
-
         }
+        console.log(document.getElementById('whereProductsShow').innerHTML)
     }
 
     function sendMultipleData() {
